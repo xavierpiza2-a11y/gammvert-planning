@@ -10,25 +10,27 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --g900:#0d3b18; --g800:#1a6b2a; --g700:#22873a; --g600:#2ea349;
-  --g400:#5cc875; --g100:#e8f7ec; --g50:#f2fbf4;
-  --s100:#f1f5f9; --s200:#e2e8f0; --s400:#94a3b8;
-  --s500:#64748b; --s700:#334155; --s900:#0f172a;
+  --g900:#0d3b18;--g800:#1a6b2a;--g700:#22873a;--g600:#2ea349;
+  --g400:#5cc875;--g100:#e8f7ec;--g50:#f2fbf4;
+  --s100:#f1f5f9;--s200:#e2e8f0;--s300:#cbd5e1;--s400:#94a3b8;
+  --s500:#64748b;--s700:#334155;--s900:#0f172a;
   --white:#fff;
-  --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
-  --r:14px; --r-sm:8px;
-  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06);
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --r:14px;--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.06);
   --shadow-lg:0 8px 32px rgba(0,0,0,.14);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-tap-highlight-color:transparent}
-body{font-family:var(--font);background:var(--s100);color:var(--s900);min-height:100dvh;-webkit-font-smoothing:antialiased}
+body{font-family:var(--font);background:var(--s100);color:var(--s900);min-height:100dvh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button{font-family:inherit;cursor:pointer;border:none;background:none}
 
-.screen{display:none;min-height:100dvh}
-.screen.active{display:flex;flex-direction:column}
+/* ── SCREENS ── */
+.screen{display:none;min-height:100dvh;flex-direction:column}
+.screen.active{display:flex}
 
-/* ── LOGIN ── */
+/* ══════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════ */
 #loginScreen{background:var(--g900);overflow:hidden;position:relative}
 #loginScreen::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(46,163,73,.25) 0%,transparent 70%);border-radius:50%}
 #loginScreen::after{content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(92,200,117,.12) 0%,transparent 70%);border-radius:50%}
@@ -45,11 +47,16 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .emp-btn{display:flex;align-items:center;gap:11px;padding:12px 13px;border:1.5px solid var(--s200);border-radius:var(--r);background:var(--white);transition:border-color .15s,background .15s,transform .1s;text-align:left;width:100%}
 .emp-btn:active{transform:scale(.98)}
 .emp-btn:hover{border-color:var(--g600);background:var(--g50)}
-.emp-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--white);flex-shrink:0;letter-spacing:-.4px}
+.emp-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--white);flex-shrink:0}
 .emp-name{font-size:14px;font-weight:600;color:var(--s900)}
 .emp-arrow{margin-left:auto;color:var(--s400);font-size:17px}
 
-/* ── HEADER ── */
+/* ══════════════════════════════════════════
+   MAIN APP SHELL
+══════════════════════════════════════════ */
+#appScreen{padding-bottom:64px}
+
+/* Header */
 .app-header{background:var(--g800);color:var(--white);padding:11px 15px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:50;box-shadow:0 2px 10px rgba(0,0,0,.15)}
 .hdr-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--white);flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
 .hdr-info{flex:1;min-width:0}
@@ -57,60 +64,164 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .hdr-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px}
 .hdr-actions{display:flex;align-items:center;gap:7px}
 .notif-dot{width:9px;height:9px;border-radius:50%;background:#f59e0b;display:none;box-shadow:0 0 0 2px var(--g800);animation:pulse 1.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.8}}
-.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15);font-size:17px;color:var(--white);transition:background .15s}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.icon-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.15);font-size:17px;color:var(--white)}
 .icon-btn:active{background:rgba(255,255,255,.3)}
 
-/* ── UPDATE BANNER ── */
-.update-banner{background:#f59e0b;color:var(--s900);text-align:center;padding:9px 15px;font-size:13px;font-weight:600;display:none;gap:7px;align-items:center;justify-content:center;cursor:pointer;animation:slideDown .3s ease-out}
+/* Update banner */
+.update-banner{background:#f59e0b;color:var(--s900);text-align:center;padding:9px 15px;font-size:13px;font-weight:600;display:none;gap:7px;align-items:center;justify-content:center;cursor:pointer}
 .update-banner.visible{display:flex}
-@keyframes slideDown{from{transform:translateY(-100%)}to{transform:none}}
 
-/* ── MONTH NAV ── */
-.month-nav{background:var(--white);border-bottom:1px solid var(--s200);padding:13px 15px;display:flex;align-items:center;justify-content:space-between}
-.nav-btn{width:34px;height:34px;border-radius:50%;background:var(--g100);color:var(--g800);font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:background .15s}
+/* Tab bar */
+.tab-bar{background:var(--white);border-bottom:1px solid var(--s200);display:flex}
+.tab-btn{flex:1;padding:12px 8px;font-size:13px;font-weight:600;color:var(--s400);display:flex;flex-direction:column;align-items:center;gap:3px;border-bottom:2.5px solid transparent;transition:color .15s,border-color .15s}
+.tab-btn.active{color:var(--g700);border-bottom-color:var(--g600)}
+.tab-icon{font-size:18px}
+
+/* ── Tab panels ── */
+.tab-panel{display:none;flex:1;flex-direction:column}
+.tab-panel.active{display:flex}
+
+/* Month nav */
+.month-nav{background:var(--white);border-bottom:1px solid var(--s200);padding:11px 14px;display:flex;align-items:center;gap:8px}
+.nav-btn{width:32px;height:32px;border-radius:50%;background:var(--g100);color:var(--g800);font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
 .nav-btn:active{background:var(--g600);color:var(--white)}
 .nav-btn:disabled{opacity:.3;pointer-events:none}
-.month-label{text-align:center}
-.month-name{font-size:17px;font-weight:700;color:var(--s900);text-transform:capitalize;letter-spacing:-.3px}
+.month-center{flex:1;text-align:center}
+.month-name{font-size:16px;font-weight:700;color:var(--s900);text-transform:capitalize;letter-spacing:-.3px}
 .month-year{font-size:11px;color:var(--s400);margin-top:1px}
+.filter-btn{width:32px;height:32px;border-radius:8px;background:var(--g100);color:var(--g800);font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.filter-btn.has-filter::after{content:'';position:absolute;top:4px;right:4px;width:8px;height:8px;background:#f59e0b;border-radius:50%;border:1.5px solid var(--white)}
 
-/* ── STATS ── */
-.stats-strip{background:var(--g800);padding:9px 15px;display:flex;gap:9px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+/* Stats strip */
+.stats-strip{background:var(--g800);padding:8px 14px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
 .stats-strip::-webkit-scrollbar{display:none}
-.stat-chip{background:rgba(255,255,255,.15);color:var(--white);border-radius:18px;padding:5px 13px;font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.stat-chip{background:rgba(255,255,255,.15);color:var(--white);border-radius:18px;padding:5px 12px;font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0}
 
-/* ── PLANNING LIST ── */
+/* ── PLANNING LIST (vue individuelle) ── */
 .planning-scroll{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:5px}
 .day-row{background:var(--white);border-radius:var(--r);display:flex;align-items:stretch;box-shadow:var(--shadow);overflow:hidden}
 .day-row.is-today{box-shadow:0 0 0 2px var(--g600),var(--shadow)}
-.day-row.is-past{opacity:.6}
+.day-row.is-past{opacity:.55}
 .day-row.is-weekend .day-side{background:var(--s200)}
-.day-side{width:54px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:11px 5px;background:var(--s100)}
+.day-side{width:54px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 5px;background:var(--s100)}
 .day-row.is-today .day-side{background:var(--g800)}
 .d-name{font-size:9px;font-weight:600;text-transform:uppercase;color:var(--s400);letter-spacing:.5px}
-.d-num{font-size:21px;font-weight:700;color:var(--s700);line-height:1.1;font-variant-numeric:tabular-nums}
+.d-num{font-size:20px;font-weight:700;color:var(--s700);line-height:1.1;font-variant-numeric:tabular-nums}
 .day-row.is-today .d-name{color:rgba(255,255,255,.65)}
 .day-row.is-today .d-num{color:var(--white)}
-.day-main{flex:1;padding:9px 13px;display:flex;align-items:center;gap:9px;min-width:0}
-.shift-pill{padding:5px 11px;border-radius:18px;font-size:11px;font-weight:700;flex-shrink:0;letter-spacing:.2px}
-.shift-hours{font-size:12px;color:var(--s500);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
-.today-tag{margin-left:auto;background:var(--g100);color:var(--g700);font-size:9px;font-weight:700;padding:3px 7px;border-radius:9px;flex-shrink:0;text-transform:uppercase;letter-spacing:.5px}
+.day-main{flex:1;padding:8px 12px;display:flex;align-items:center;gap:8px;min-width:0}
+.shift-pill{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:700;flex-shrink:0;letter-spacing:.1px;white-space:nowrap}
+.shift-hours{font-size:11px;color:var(--s500);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.today-tag{margin-left:auto;background:var(--g100);color:var(--g700);font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;flex-shrink:0;text-transform:uppercase}
 
-/* Shift colors */
-.s-REPOS{background:#f1f5f9;color:#64748b}
-.s-CONGES{background:#fce7f3;color:#9d174d}
-.s-AT{background:#fffbeb;color:#92400e}
-.s-REL{background:#dcfce7;color:#15803d}
-.s-RECUP{background:#e0f2fe;color:#0369a1}
-.s-CFA{background:#ede9fe;color:#6d28d9}
-.s-JOURNEE{background:#dbeafe;color:#1d4ed8}
-.s-FORMATION{background:#fef9c3;color:#854d0e}
-.s-REUNION{background:#fef9c3;color:#854d0e}
-.s-HORAIRE{background:#dcfce7;color:#15803d}
-.s-default{background:#f1f5f9;color:#64748b}
+/* ══════════════════════════════════════════
+   VUE ÉQUIPE
+══════════════════════════════════════════ */
+.team-scroll-wrap{flex:1;overflow:auto;position:relative}
 
-/* ── STATES ── */
+.team-table{border-collapse:collapse;font-size:11px;min-width:100%}
+.team-table th,
+.team-table td{border:1px solid var(--s200);padding:0;white-space:nowrap}
+
+/* Sticky colonnes / lignes */
+.team-table .col-date{
+  position:sticky;left:0;z-index:10;
+  background:var(--white);
+  min-width:76px;width:76px;
+  font-size:11px;font-weight:600;color:var(--s700);
+  padding:6px 8px;
+  border-right:2px solid var(--s300);
+}
+.team-table thead th{
+  position:sticky;top:0;z-index:11;
+  background:var(--g800);color:var(--white);
+  padding:8px 6px;font-size:11px;font-weight:700;
+  text-align:center;min-width:88px;
+}
+.team-table thead th.col-date{
+  z-index:20;background:var(--g800);color:var(--white);
+  left:0;
+}
+.team-table tr.is-today .col-date{background:#dcfce7;color:var(--g700)}
+.team-table tr.is-weekend .col-date{background:var(--s100)}
+.team-table tr.is-today{outline:2px solid var(--g600);outline-offset:-1px}
+
+.team-cell{
+  text-align:center;padding:4px 4px;
+  vertical-align:middle;
+  min-width:88px;
+}
+.team-pill{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:3px 7px;border-radius:10px;
+  font-size:10px;font-weight:700;
+  width:100%;max-width:82px;
+  overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;
+  letter-spacing:.1px;
+}
+.team-hours{font-size:9px;color:var(--s500);margin-top:1px;font-family:var(--mono);display:block}
+
+.emp-header-inner{display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 0}
+.emp-header-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--white)}
+
+/* ══════════════════════════════════════════
+   SHIFT COLORS
+══════════════════════════════════════════ */
+.s-JOURNEE           {background:#2563eb;color:#fff}
+.s-REPOS             {background:#374151;color:#fff}
+.s-RTT               {background:#374151;color:#fff}
+.s-AT                {background:#374151;color:#fff}
+.s-RECUP             {background:#374151;color:#fff}
+.s-CFA               {background:#16a34a;color:#fff}
+.s-CONGES            {background:#dc2626;color:#fff}
+.s-CONGESMAT         {background:#dc2626;color:#fff}
+.s-CONGESPAT         {background:#dc2626;color:#fff}
+.s-CONGESPATERNITE   {background:#dc2626;color:#fff}
+.s-REL               {background:#22c55e;color:#fff}
+.s-FORMATION         {background:#7c3aed;color:#fff}
+.s-REUNION           {background:#7c3aed;color:#fff}
+.s-H9H30             {background:#fed7aa;color:#7c2d12}
+.s-H9                {background:#fef9c3;color:#713f12}
+.s-H10               {background:#bfdbfe;color:#1e3a8a}
+.s-HORAIRE           {background:#fef9c3;color:#713f12}
+.s-default           {background:#f1f5f9;color:#64748b}
+
+/* ══════════════════════════════════════════
+   MODAL MOIS
+══════════════════════════════════════════ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal-sheet{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:0 0 32px;animation:sheetUp .25s ease-out}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+.modal-handle{width:40px;height:4px;background:var(--s300);border-radius:2px;margin:12px auto 0}
+.modal-title{font-size:16px;font-weight:700;padding:16px 20px 12px;color:var(--s900)}
+.modal-subtitle{font-size:12px;color:var(--s400);padding:0 20px 14px}
+.month-list{display:flex;flex-direction:column;gap:1px;padding:0 12px}
+.month-item{display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;cursor:pointer;transition:background .1s}
+.month-item:active{background:var(--g50)}
+.month-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--s300);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s}
+.month-item.selected .month-check{background:var(--g600);border-color:var(--g600);color:var(--white)}
+.month-item-name{font-size:14px;font-weight:600;color:var(--s900);text-transform:capitalize}
+.modal-actions{display:flex;gap:10px;padding:16px 20px 0}
+.modal-btn{flex:1;padding:12px;border-radius:24px;font-size:14px;font-weight:700;text-align:center}
+.modal-ok{background:var(--g600);color:var(--white)}
+.modal-cancel{background:var(--s100);color:var(--s700)}
+
+/* ══════════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════════ */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--s200);display:flex;z-index:40;box-shadow:0 -2px 12px rgba(0,0,0,.07)}
+.bnav-btn{flex:1;padding:8px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:600;color:var(--s400);transition:color .15s}
+.bnav-btn.active{color:var(--g700)}
+.bnav-icon{font-size:21px;line-height:1}
+.bnav-dot{width:5px;height:5px;border-radius:50%;background:var(--g600);display:none;margin-top:-3px}
+.bnav-btn.active .bnav-dot{display:block}
+
+/* ══════════════════════════════════════════
+   STATES / FOOTER / TOAST
+══════════════════════════════════════════ */
 .center-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center;gap:14px}
 .spinner{width:38px;height:38px;border:3px solid var(--s200);border-top-color:var(--g600);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -118,11 +229,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .state-title{font-size:16px;font-weight:700;color:var(--s700)}
 .state-desc{font-size:13px;color:var(--s400);line-height:1.5}
 .retry-btn{background:var(--g600);color:var(--white);padding:9px 22px;border-radius:22px;font-size:13px;font-weight:600}
-
-/* ── FOOTER ── */
-.app-footer{background:var(--white);border-top:1px solid var(--s200);padding:7px 15px;font-size:10px;color:var(--s400);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-
-/* ── INSTALL BAR ── */
+.app-footer{background:var(--white);border-top:1px solid var(--s200);padding:6px 14px;font-size:10px;color:var(--s400);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .install-bar{background:var(--g100);border:1px solid var(--g400);border-radius:var(--r);margin:10px;padding:11px 13px;display:none;flex-direction:column;gap:7px}
 .install-bar.visible{display:flex}
 .ib-top{display:flex;align-items:center;gap:9px}
@@ -134,15 +241,15 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .ib-btn{padding:6px 14px;border-radius:18px;font-size:12px;font-weight:600}
 .ib-yes{background:var(--g700);color:var(--white)}
 .ib-no{color:var(--s500)}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s900);color:var(--white);padding:11px 18px;border-radius:22px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);z-index:200;max-width:290px;text-align:center;white-space:nowrap;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s900);color:var(--white);padding:11px 18px;border-radius:22px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);z-index:200;max-width:290px;text-align:center;white-space:nowrap;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ══════════════════════════════════════════
+     LOGIN
+══════════════════════════════════════════ -->
 <div id="loginScreen" class="screen active">
   <div class="login-inner">
     <div class="login-logo">🌿</div>
@@ -155,9 +262,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
   </div>
 </div>
 
-<!-- PLANNING -->
-<div id="planningScreen" class="screen">
+<!-- ══════════════════════════════════════════
+     APP
+══════════════════════════════════════════ -->
+<div id="appScreen" class="screen">
 
+  <!-- Header -->
   <div class="app-header">
     <div class="hdr-avatar" id="hdrAvatar"></div>
     <div class="hdr-info">
@@ -170,52 +280,108 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
     </div>
   </div>
 
+  <!-- Update banner -->
   <div class="update-banner" id="updateBanner" onclick="doRefresh()">
     🔄 <span>Planning mis à jour — Appuyez pour recharger</span>
   </div>
 
-  <div class="month-nav">
-    <button class="nav-btn" id="prevBtn" onclick="changeMonth(-1)">‹</button>
-    <div class="month-label">
-      <div class="month-name" id="monthName"></div>
-      <div class="month-year" id="monthYear"></div>
-    </div>
-    <button class="nav-btn" id="nextBtn" onclick="changeMonth(1)">›</button>
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tabMyBtn" onclick="switchTab('my')">
+      <span class="tab-icon">📅</span>Mon planning
+    </button>
+    <button class="tab-btn" id="tabTeamBtn" onclick="switchTab('team')">
+      <span class="tab-icon">👥</span>Équipe
+    </button>
   </div>
 
-  <div class="stats-strip" id="statsStrip"></div>
-
-  <div class="install-bar" id="installBar">
-    <div class="ib-top">
-      <div class="ib-icon">📲</div>
-      <div class="ib-text">
-        <div class="ib-title">Installer l'application</div>
-        <div class="ib-sub">Accès rapide depuis l'écran d'accueil</div>
+  <!-- ── Mon planning ── -->
+  <div class="tab-panel active" id="panelMy">
+    <div class="month-nav">
+      <button class="nav-btn" id="prevBtnMy" onclick="changeMonth(-1)">‹</button>
+      <div class="month-center">
+        <div class="month-name" id="monthNameMy"></div>
+        <div class="month-year" id="monthYearMy"></div>
+      </div>
+      <button class="nav-btn" id="nextBtnMy" onclick="changeMonth(1)">›</button>
+      <button class="filter-btn" id="filterBtnMy" onclick="openMonthModal()" title="Filtrer les mois">🗓️</button>
+    </div>
+    <div class="stats-strip" id="statsMy"></div>
+    <div class="install-bar" id="installBar">
+      <div class="ib-top">
+        <div class="ib-icon">📲</div>
+        <div class="ib-text">
+          <div class="ib-title">Installer l'application</div>
+          <div class="ib-sub">Accès rapide depuis l'écran d'accueil</div>
+        </div>
+      </div>
+      <div class="ib-actions">
+        <button class="ib-btn ib-no" onclick="dismissInstall()">Plus tard</button>
+        <button class="ib-btn ib-yes" onclick="doInstall()">Installer</button>
       </div>
     </div>
-    <div class="ib-actions">
-      <button class="ib-btn ib-no" onclick="dismissInstall()">Plus tard</button>
-      <button class="ib-btn ib-yes" onclick="doInstall()">Installer</button>
+    <div class="planning-scroll" id="planningList">
+      <div class="center-state"><div class="spinner"></div></div>
+    </div>
+    <div class="app-footer">
+      <span id="footerUpdate">—</span>
+      <span id="footerStatus">⏳</span>
     </div>
   </div>
 
-  <div class="planning-scroll" id="planningList">
-    <div class="center-state"><div class="spinner"></div></div>
+  <!-- ── Équipe ── -->
+  <div class="tab-panel" id="panelTeam">
+    <div class="month-nav">
+      <button class="nav-btn" id="prevBtnTeam" onclick="changeMonthTeam(-1)">‹</button>
+      <div class="month-center">
+        <div class="month-name" id="monthNameTeam"></div>
+        <div class="month-year" id="monthYearTeam"></div>
+      </div>
+      <button class="nav-btn" id="nextBtnTeam" onclick="changeMonthTeam(1)">›</button>
+      <button class="filter-btn" id="filterBtnTeam" onclick="openMonthModal()" title="Filtrer les mois">🗓️</button>
+    </div>
+    <div class="stats-strip" id="statsTeam"></div>
+    <div class="team-scroll-wrap" id="teamWrap">
+      <div class="center-state"><div class="spinner"></div></div>
+    </div>
   </div>
 
-  <div class="app-footer">
-    <span id="footerUpdate">—</span>
-    <span id="footerStatus">⏳ Synchronisation…</span>
-  </div>
+</div>
 
+<!-- Bottom Nav -->
+<div class="bottom-nav" id="bottomNav" style="display:none">
+  <button class="bnav-btn active" id="bnavMy" onclick="switchTab('my')">
+    <span class="bnav-icon">📅</span>
+    <span>Mon planning</span>
+    <span class="bnav-dot"></span>
+  </button>
+  <button class="bnav-btn" id="bnavTeam" onclick="switchTab('team')">
+    <span class="bnav-icon">👥</span>
+    <span>Équipe</span>
+    <span class="bnav-dot"></span>
+  </button>
+</div>
+
+<!-- Modal filtre mois -->
+<div class="modal-overlay" id="monthModal" onclick="closeMonthModal(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Filtrer les mois</div>
+    <div class="modal-subtitle">Sélectionnez les mois à afficher dans la navigation</div>
+    <div class="month-list" id="monthList"></div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-cancel" onclick="closeMonthModal()">Annuler</button>
+      <button class="modal-btn modal-ok" onclick="applyMonthFilter()">Appliquer</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ================================================================
-// CONFIG — URL à remplir après déploiement Apps Script
-// ================================================================
+// ════════════════════════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════════════════════════
 const CONFIG = {
   API_URL: 'https://script.google.com/macros/s/AKfycby_gnCtcZl0ELC5yMpAZ9yjdhCgK8i6_iSMxsobbdhBqG51E-baAuovyt57JQCwZ_31eA/exec',
 
@@ -229,35 +395,60 @@ const CONFIG = {
     { name: 'Kenzo',   color: '#854d0e' },
   ],
 
+  ALL_MONTHS: [
+    { key: '2026-06', label: 'Juin 2026' },
+    { key: '2026-07', label: 'Juillet 2026' },
+    { key: '2026-08', label: 'Août 2026' },
+    { key: '2026-09', label: 'Septembre 2026' },
+    { key: '2026-10', label: 'Octobre 2026' },
+    { key: '2026-11', label: 'Novembre 2026' },
+    { key: '2026-12', label: 'Décembre 2026' },
+    { key: '2027-01', label: 'Janvier 2027' },
+    { key: '2027-02', label: 'Février 2027' },
+    { key: '2027-03', label: 'Mars 2027' },
+    { key: '2027-04', label: 'Avril 2027' },
+    { key: '2027-05', label: 'Mai 2027' },
+  ],
+
   SHIFTS: {
-    'REPOS':     { label: 'Repos',     emoji: '😴' },
-    'CONGES':    { label: 'Congés',    emoji: '🏖️' },
-    'AT':        { label: 'Astreinte', emoji: '🔔' },
-    'REL':       { label: 'REL',       emoji: '🔄' },
-    'RECUP':     { label: 'Récup.',    emoji: '💤' },
-    'CFA':       { label: 'CFA',       emoji: '🎓' },
-    'JOURNEE':   { label: 'Journée',   emoji: '☀️' },
-    'FORMATION': { label: 'Formation', emoji: '📚' },
-    'REUNION':   { label: 'Réunion',   emoji: '💬' },
-    'HORAIRE':   { label: '',          emoji: '🕐' },
+    'REPOS':           { label: 'Repos',      emoji: '😴' },
+    'CONGES':          { label: 'Congés',     emoji: '🏖️' },
+    'CONGESMAT':       { label: 'Cong.Mat.',  emoji: '👶' },
+    'CONGESPAT':       { label: 'Cong.Pat.',  emoji: '👶' },
+    'CONGESPATERNITE': { label: 'Cong.Pat.',  emoji: '👶' },
+    'AT':              { label: 'AT',         emoji: '🔔' },
+    'RTT':             { label: 'RTT',        emoji: '📅' },
+    'REL':             { label: 'REL',        emoji: '🔄' },
+    'RECUP':           { label: 'Récup.',     emoji: '💤' },
+    'CFA':             { label: 'CFA',        emoji: '🎓' },
+    'JOURNEE':         { label: 'Journée',    emoji: '☀️' },
+    'FORMATION':       { label: 'Formation',  emoji: '📚' },
+    'REUNION':         { label: 'Réunion',    emoji: '💬' },
+    'HORAIRE':         { label: '',           emoji: '🕐' },
   },
 
-  MIN_MONTH:     '2026-06',
-  MAX_MONTH:     '2027-05',
   POLL_INTERVAL: 5 * 60 * 1000,
 };
 
-// ================================================================
+// ════════════════════════════════════════════════════════════
 // STATE
-// ================================================================
+// ════════════════════════════════════════════════════════════
 const state = {
-  employee: null, currentDate: new Date(),
-  cache: {}, lastUpdate: {}, pollTimer: null, deferredInstall: null,
+  employee: null,
+  activeTab: 'my',
+  currentDateMy:   new Date(),
+  currentDateTeam: new Date(),
+  cache: {}, lastUpdate: {}, teamCache: {},
+  pollTimer: null, deferredInstall: null,
+  // Mois visibles (par défaut tous)
+  visibleMonths: lsGet('gv_months') || CONFIG.ALL_MONTHS.map(m => m.key),
+  // Sélection temporaire dans le modal
+  modalSelection: [],
 };
 
-// ================================================================
+// ════════════════════════════════════════════════════════════
 // INIT
-// ================================================================
+// ════════════════════════════════════════════════════════════
 window.addEventListener('load', () => {
   registerSW();
   buildEmpList();
@@ -269,9 +460,9 @@ window.addEventListener('load', () => {
   }
 });
 
-// ================================================================
-// EMPLOYEE LIST
-// ================================================================
+// ════════════════════════════════════════════════════════════
+// LOGIN
+// ════════════════════════════════════════════════════════════
 function buildEmpList() {
   document.getElementById('empGrid').innerHTML = CONFIG.EMPLOYEES.map(emp => `
     <button class="emp-btn" onclick='loginAs(${JSON.stringify(emp)})'>
@@ -281,20 +472,20 @@ function buildEmpList() {
     </button>`).join('');
 }
 
-// ================================================================
-// LOGIN
-// ================================================================
 function loginAs(emp, animate = true) {
   state.employee = emp;
   localStorage.setItem('gv_emp', emp.name);
-  const av = document.getElementById('hdrAvatar');
-  av.textContent = initials(emp.name);
-  av.style.background = emp.color;
+  document.getElementById('hdrAvatar').textContent = initials(emp.name);
+  document.getElementById('hdrAvatar').style.background = emp.color;
   document.getElementById('hdrName').textContent = emp.name;
-  showScreen('planningScreen');
+  showScreen('appScreen');
+  document.getElementById('bottomNav').style.display = 'flex';
   if (animate) showToast('Bonjour ' + emp.name.split(' ')[0] + ' 👋');
-  renderMonthNav();
-  loadMonth();
+  clampToVisible('my');
+  clampToVisible('team');
+  renderMonthNav('my');
+  renderMonthNav('team');
+  loadMy();
   startPolling();
   askNotif();
 }
@@ -302,75 +493,167 @@ function loginAs(emp, animate = true) {
 function openSettings() {
   if (confirm('Connecté en tant que : ' + state.employee.name + '\n\nOK pour changer de profil ?')) logout();
 }
-
 function logout() {
   stopPolling();
   state.employee = null;
   localStorage.removeItem('gv_emp');
+  document.getElementById('bottomNav').style.display = 'none';
   showScreen('loginScreen');
 }
-
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-// ================================================================
-// MONTH NAV
-// ================================================================
-function changeMonth(d) {
-  const c = state.currentDate;
-  state.currentDate = new Date(c.getFullYear(), c.getMonth() + d, 1);
-  renderMonthNav();
-  loadMonth();
+// ════════════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════════════
+function switchTab(tab) {
+  state.activeTab = tab;
+  ['my','team'].forEach(t => {
+    document.getElementById('tabMyBtn'  ).classList.toggle('active', t === 'my'   && tab === 'my');
+    document.getElementById('tabTeamBtn').classList.toggle('active', t === 'team' && tab === 'team');
+    document.getElementById('panelMy'   ).classList.toggle('active', tab === 'my');
+    document.getElementById('panelTeam').classList.toggle('active', tab === 'team');
+    document.getElementById('bnavMy'    ).classList.toggle('active', tab === 'my');
+    document.getElementById('bnavTeam'  ).classList.toggle('active', tab === 'team');
+  });
+  if (tab === 'team') loadTeam();
 }
 
-function renderMonthNav() {
-  const d   = state.currentDate;
-  const key = monthKey(d);
+// ════════════════════════════════════════════════════════════
+// MONTH NAV
+// ════════════════════════════════════════════════════════════
+function getVisibleMonths() {
+  return CONFIG.ALL_MONTHS.filter(m => state.visibleMonths.includes(m.key));
+}
+
+function clampToVisible(panel) {
+  const visible = getVisibleMonths();
+  if (!visible.length) return;
+  const dateKey = panel === 'my' ? 'currentDateMy' : 'currentDateTeam';
+  const mk = monthKey(state[dateKey]);
+  if (!state.visibleMonths.includes(mk)) {
+    // Aller au premier mois visible
+    const [y, m] = visible[0].key.split('-').map(Number);
+    state[dateKey] = new Date(y, m - 1, 1);
+  }
+}
+
+function changeMonth(delta) {
+  const visible = getVisibleMonths();
+  const mk = monthKey(state.currentDateMy);
+  const idx = visible.findIndex(m => m.key === mk);
+  const newIdx = idx + delta;
+  if (newIdx < 0 || newIdx >= visible.length) return;
+  const [y, m] = visible[newIdx].key.split('-').map(Number);
+  state.currentDateMy = new Date(y, m - 1, 1);
+  renderMonthNav('my');
+  loadMy();
+}
+
+function changeMonthTeam(delta) {
+  const visible = getVisibleMonths();
+  const mk = monthKey(state.currentDateTeam);
+  const idx = visible.findIndex(m => m.key === mk);
+  const newIdx = idx + delta;
+  if (newIdx < 0 || newIdx >= visible.length) return;
+  const [y, m] = visible[newIdx].key.split('-').map(Number);
+  state.currentDateTeam = new Date(y, m - 1, 1);
+  renderMonthNav('team');
+  loadTeam();
+}
+
+function renderMonthNav(panel) {
+  const visible = getVisibleMonths();
+  const isMy = panel === 'my';
+  const d   = isMy ? state.currentDateMy : state.currentDateTeam;
+  const mk  = monthKey(d);
+  const idx = visible.findIndex(m => m.key === mk);
   const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin',
                   'Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  document.getElementById('monthName').textContent = MONTHS[d.getMonth()];
-  document.getElementById('monthYear').textContent = d.getFullYear();
-  document.getElementById('prevBtn').disabled = key <= CONFIG.MIN_MONTH;
-  document.getElementById('nextBtn').disabled = key >= CONFIG.MAX_MONTH;
+  const sfx = isMy ? 'My' : 'Team';
+  document.getElementById('monthName' + sfx).textContent = MONTHS[d.getMonth()];
+  document.getElementById('monthYear' + sfx).textContent = d.getFullYear();
+  document.getElementById('prevBtn'   + sfx).disabled = idx <= 0;
+  document.getElementById('nextBtn'   + sfx).disabled = idx >= visible.length - 1;
+  // Indicateur de filtre actif
+  const hasFilter = state.visibleMonths.length < CONFIG.ALL_MONTHS.length;
+  document.getElementById('filterBtn' + sfx).classList.toggle('has-filter', hasFilter);
 }
 
-// ================================================================
-// DATA
-// ================================================================
-async function loadMonth(silent = false) {
-  const mk = monthKey(state.currentDate);
+// ════════════════════════════════════════════════════════════
+// MODAL FILTRE MOIS
+// ════════════════════════════════════════════════════════════
+function openMonthModal() {
+  state.modalSelection = [...state.visibleMonths];
+  renderMonthList();
+  document.getElementById('monthModal').classList.add('open');
+}
+
+function closeMonthModal(e) {
+  if (!e || e.target === document.getElementById('monthModal'))
+    document.getElementById('monthModal').classList.remove('open');
+}
+
+function renderMonthList() {
+  document.getElementById('monthList').innerHTML = CONFIG.ALL_MONTHS.map(m => `
+    <div class="month-item ${state.modalSelection.includes(m.key) ? 'selected' : ''}"
+         onclick="toggleMonth('${m.key}')">
+      <div class="month-check">${state.modalSelection.includes(m.key) ? '✓' : ''}</div>
+      <div class="month-item-name">${m.label}</div>
+    </div>`).join('');
+}
+
+function toggleMonth(key) {
+  const idx = state.modalSelection.indexOf(key);
+  if (idx === -1) state.modalSelection.push(key);
+  else if (state.modalSelection.length > 1) state.modalSelection.splice(idx, 1);
+  renderMonthList();
+}
+
+function applyMonthFilter() {
+  state.visibleMonths = [...state.modalSelection];
+  lsSet('gv_months', state.visibleMonths);
+  document.getElementById('monthModal').classList.remove('open');
+  // Recaler si le mois courant n'est plus visible
+  clampToVisible('my');
+  clampToVisible('team');
+  renderMonthNav('my');
+  renderMonthNav('team');
+  loadMy();
+  if (state.activeTab === 'team') loadTeam();
+  showToast('Filtres appliqués ✓');
+}
+
+// ════════════════════════════════════════════════════════════
+// DATA — INDIVIDUEL
+// ════════════════════════════════════════════════════════════
+async function loadMy(silent = false) {
+  const mk = monthKey(state.currentDateMy);
   if (!silent) showLoading();
   try {
     const url  = CONFIG.API_URL + '?employee=' + encodeURIComponent(state.employee.name) + '&month=' + mk;
-    const res  = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
+    const data = await fetchJSON(url);
     if (state.lastUpdate[mk] && data.lastUpdate !== state.lastUpdate[mk]) onChange(mk, data.lastUpdate);
     state.lastUpdate[mk] = data.lastUpdate;
     state.cache[mk] = data;
     lsSet('plan_' + mk, data);
-    renderPlanning(data);
+    renderMy(data);
     setFooter(data.lastUpdate, false);
     hideBanner();
   } catch (err) {
     const cached = state.cache[mk] || lsGet('plan_' + mk);
-    if (cached) {
-      if (!silent) { renderPlanning(cached); setFooter(cached.lastUpdate, true); showToast('📴 Cache local (hors ligne)'); }
-    } else if (!silent) {
-      showError(err.message);
-    }
+    if (cached && !silent) { renderMy(cached); setFooter(cached.lastUpdate, true); showToast('📴 Cache local'); }
+    else if (!silent) showError(err.message);
   }
 }
 
 async function pollUpdate() {
   if (!state.employee) return;
-  const mk = monthKey(state.currentDate);
+  const mk = monthKey(state.currentDateMy);
   try {
-    const url  = CONFIG.API_URL + '?employee=' + encodeURIComponent(state.employee.name) + '&month=' + mk + '&check=1';
-    const data = await (await fetch(url, { cache: 'no-store' })).json();
+    const data = await fetchJSON(CONFIG.API_URL + '?employee=' + encodeURIComponent(state.employee.name) + '&month=' + mk + '&check=1');
     if (state.lastUpdate[mk] && data.lastUpdate && data.lastUpdate !== state.lastUpdate[mk]) onChange(mk, data.lastUpdate);
   } catch (_) {}
 }
@@ -383,25 +666,45 @@ function onChange(mk, ts) {
   document.getElementById('notifDot').style.display = 'block';
 }
 
-function doRefresh() {
-  document.getElementById('notifDot').style.display = 'none';
-  loadMonth();
+// ════════════════════════════════════════════════════════════
+// DATA — ÉQUIPE
+// ════════════════════════════════════════════════════════════
+async function loadTeam() {
+  const mk   = monthKey(state.currentDateTeam);
+  const wrap = document.getElementById('teamWrap');
+  wrap.innerHTML = '<div class="center-state"><div class="spinner"></div><div class="state-title">Chargement équipe…</div></div>';
+
+  // Vérifier le cache équipe
+  if (state.teamCache[mk]) { renderTeam(state.teamCache[mk], mk); return; }
+
+  try {
+    // Charger tous les employés en parallèle
+    const results = await Promise.all(
+      CONFIG.EMPLOYEES.map(emp =>
+        fetchJSON(CONFIG.API_URL + '?employee=' + encodeURIComponent(emp.name) + '&month=' + mk)
+          .then(data => ({ emp, data }))
+          .catch(() => ({ emp, data: { days: {} } }))
+      )
+    );
+    state.teamCache[mk] = results;
+    renderTeam(results, mk);
+  } catch (err) {
+    wrap.innerHTML = `<div class="center-state"><div class="state-icon">⚠️</div>
+      <div class="state-title">Erreur</div><div class="state-desc">${err.message}</div>
+      <button class="retry-btn" onclick="loadTeam()">Réessayer</button></div>`;
+  }
 }
 
-function startPolling() { stopPolling(); state.pollTimer = setInterval(pollUpdate, CONFIG.POLL_INTERVAL); }
-function stopPolling()  { if (state.pollTimer) clearInterval(state.pollTimer); }
-
-// ================================================================
-// RENDER
-// ================================================================
-function renderPlanning(data) {
+// ════════════════════════════════════════════════════════════
+// RENDER — INDIVIDUEL
+// ════════════════════════════════════════════════════════════
+function renderMy(data) {
   const list  = document.getElementById('planningList');
-  const d     = state.currentDate;
+  const d     = state.currentDateMy;
   const year  = d.getFullYear(), month = d.getMonth();
   const today = new Date();
   const days  = new Date(year, month + 1, 0).getDate();
-  const DNAMES = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-
+  const DN    = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
   let html = '', workDays = 0, totalH = 0;
 
   for (let day = 1; day <= days; day++) {
@@ -414,24 +717,18 @@ function renderPlanning(data) {
     const shift   = dayData.shift || '';
     const hours   = dayData.hours || '';
     const sInfo   = CONFIG.SHIFTS[shift] || {};
-    const label   = shift === 'HORAIRE' ? '' : (sInfo.label || shift || '—');
-    const emoji   = sInfo.emoji || '';
-    const cls     = 's-' + (CONFIG.SHIFTS[shift] ? shift : 'default');
-
-    if (shift && !['REPOS','CONGES'].includes(shift)) {
-      workDays++;
-      totalH += calcH(hours, shift);
+    const label   = shift === 'HORAIRE' ? hours : ((sInfo.emoji ? sInfo.emoji + ' ' : '') + (sInfo.label || shift || '—'));
+    const cls     = getShiftClass(shift, hours);
+    if (shift && !['REPOS','CONGES','CONGESMAT','CONGESPAT','CONGESPATERNITE','RTT'].includes(shift)) {
+      workDays++; totalH += calcH(hours, shift);
     }
-
-    const display = shift === 'HORAIRE' ? hours : (emoji + (label ? ' ' + label : ''));
-
-    html += `<div class="${['day-row', isToday?'is-today':'', isPast?'is-past':'', isWE?'is-weekend':''].filter(Boolean).join(' ')}">
+    html += `<div class="${['day-row',isToday?'is-today':'',isPast?'is-past':'',isWE?'is-weekend':''].filter(Boolean).join(' ')}">
       <div class="day-side">
-        <div class="d-name">${DNAMES[date.getDay()]}</div>
+        <div class="d-name">${DN[date.getDay()]}</div>
         <div class="d-num">${day}</div>
       </div>
       <div class="day-main">
-        <span class="shift-pill ${cls}">${display || '—'}</span>
+        <span class="shift-pill ${cls}">${label || '—'}</span>
         ${shift === 'HORAIRE' ? '' : (hours ? `<span class="shift-hours">${hours}</span>` : '')}
         ${isToday ? '<span class="today-tag">Auj.</span>' : ''}
       </div>
@@ -441,38 +738,109 @@ function renderPlanning(data) {
   list.innerHTML = html;
   const todayEl = list.querySelector('.is-today');
   if (todayEl) setTimeout(() => todayEl.scrollIntoView({ block: 'center', behavior: 'smooth' }), 80);
-
-  document.getElementById('statsStrip').innerHTML =
+  document.getElementById('statsMy').innerHTML =
     `<div class="stat-chip">📅 ${workDays} j. travaillés</div>` +
     `<div class="stat-chip">⏱ ${totalH}h prévues</div>` +
     `<div class="stat-chip">🗓 ${days} jours</div>`;
 }
 
+// ════════════════════════════════════════════════════════════
+// RENDER — ÉQUIPE
+// ════════════════════════════════════════════════════════════
+function renderTeam(results, mk) {
+  const wrap  = document.getElementById('teamWrap');
+  const d     = state.currentDateTeam;
+  const year  = d.getFullYear(), month = d.getMonth();
+  const today = new Date();
+  const days  = new Date(year, month + 1, 0).getDate();
+  const DN    = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+
+  // Stats globales
+  const totals = results.map(r => {
+    let h = 0;
+    Object.values(r.data.days || {}).forEach(v => { h += calcH(v.hours || '', v.shift || ''); });
+    return h;
+  });
+  document.getElementById('statsTeam').innerHTML =
+    results.map((r, i) =>
+      `<div class="stat-chip" style="border-left:3px solid ${r.emp.color}">${r.emp.name.split(' ')[0]} · ${totals[i]}h</div>`
+    ).join('');
+
+  // En-têtes employés
+  let thead = `<thead><tr>
+    <th class="col-date">Jour</th>
+    ${results.map(r => `
+      <th>
+        <div class="emp-header-inner">
+          <div class="emp-header-dot" style="background:${r.emp.color}">${initials(r.emp.name)}</div>
+          ${r.emp.name.split(' ')[0]}
+        </div>
+      </th>`).join('')}
+  </tr></thead>`;
+
+  // Lignes par jour
+  let tbody = '<tbody>';
+  for (let day = 1; day <= days; day++) {
+    const date    = new Date(year, month, day);
+    const dk      = year + '-' + pad(month + 1) + '-' + pad(day);
+    const isToday = date.toDateString() === today.toDateString();
+    const isWE    = date.getDay() === 0 || date.getDay() === 6;
+    const classes = [isToday?'is-today':'', isWE?'is-weekend':''].filter(Boolean).join(' ');
+
+    tbody += `<tr class="${classes}">
+      <td class="col-date">${DN[date.getDay()]} ${pad(day)}</td>
+      ${results.map(r => {
+        const dayData = r.data.days?.[dk] || {};
+        const shift   = dayData.shift || '';
+        const hours   = dayData.hours || '';
+        const sInfo   = CONFIG.SHIFTS[shift] || {};
+        const cls     = getShiftClass(shift, hours);
+        const label   = shift === 'HORAIRE' ? hours : (sInfo.label || shift || '');
+        return `<td class="team-cell">
+          ${label ? `<span class="team-pill ${cls}">${label}</span>` : '<span style="color:#cbd5e1">—</span>'}
+          ${shift !== 'HORAIRE' && hours ? `<span class="team-hours">${hours}</span>` : ''}
+        </td>`;
+      }).join('')}
+    </tr>`;
+  }
+  tbody += '</tbody>';
+
+  wrap.innerHTML = `<table class="team-table">${thead}${tbody}</table>`;
+
+  // Scroll vers aujourd'hui
+  const rows = wrap.querySelectorAll('tr.is-today');
+  if (rows.length) setTimeout(() => rows[0].scrollIntoView({ block: 'center' }), 80);
+}
+
+// ════════════════════════════════════════════════════════════
+// UI HELPERS
+// ════════════════════════════════════════════════════════════
 function showLoading() {
   document.getElementById('planningList').innerHTML =
     '<div class="center-state"><div class="spinner"></div><div class="state-title">Chargement…</div></div>';
 }
-
 function showError(msg) {
   document.getElementById('planningList').innerHTML =
-    `<div class="center-state"><div class="state-icon">⚠️</div><div class="state-title">Impossible de charger</div>
-     <div class="state-desc">${msg}<br><br>Vérifiez votre connexion.</div>
-     <button class="retry-btn" onclick="loadMonth()">Réessayer</button></div>`;
+    `<div class="center-state"><div class="state-icon">⚠️</div>
+     <div class="state-title">Impossible de charger</div>
+     <div class="state-desc">${msg}</div>
+     <button class="retry-btn" onclick="loadMy()">Réessayer</button></div>`;
 }
-
 function showBanner() { document.getElementById('updateBanner').classList.add('visible'); }
-function hideBanner() { document.getElementById('updateBanner').classList.remove('visible'); }
-
+function hideBanner()  { document.getElementById('updateBanner').classList.remove('visible'); }
+function doRefresh()   { document.getElementById('notifDot').style.display='none'; loadMy(); state.teamCache={}; if(state.activeTab==='team') loadTeam(); }
 function setFooter(ts, fromCache) {
-  const d  = ts ? new Date(ts) : null;
-  const dt = d ? d.toLocaleDateString('fr-FR') + ' ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'}) : '—';
+  const d = ts ? new Date(ts) : null;
+  const dt = d ? d.toLocaleDateString('fr-FR')+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}) : '—';
   document.getElementById('footerUpdate').textContent = 'Mis à jour : ' + dt;
   document.getElementById('footerStatus').textContent = fromCache ? '📴 Hors ligne' : '✅ Synchronisé';
 }
+function startPolling() { stopPolling(); state.pollTimer = setInterval(pollUpdate, CONFIG.POLL_INTERVAL); }
+function stopPolling()  { if (state.pollTimer) clearInterval(state.pollTimer); }
 
-// ================================================================
+// ════════════════════════════════════════════════════════════
 // NOTIFICATIONS
-// ================================================================
+// ════════════════════════════════════════════════════════════
 async function askNotif() {
   if ('Notification' in window && Notification.permission === 'default') await Notification.requestPermission();
 }
@@ -481,20 +849,9 @@ function sendNotif(title, body) {
     new Notification(title, { body, icon: 'icon.png' });
 }
 
-// ================================================================
-// TOAST
-// ================================================================
-let _tt = null;
-function showToast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  if (_tt) clearTimeout(_tt);
-  _tt = setTimeout(() => el.classList.remove('show'), 3000);
-}
-
-// ================================================================
+// ════════════════════════════════════════════════════════════
 // INSTALL
-// ================================================================
+// ════════════════════════════════════════════════════════════
 function setupInstall() {
   window.addEventListener('beforeinstallprompt', e => {
     e.preventDefault(); state.deferredInstall = e;
@@ -505,60 +862,75 @@ function doInstall() {
   if (!state.deferredInstall) return;
   state.deferredInstall.prompt();
   state.deferredInstall.userChoice.then(r => {
-    if (r.outcome === 'accepted') { showToast('✅ Application installée !'); document.getElementById('installBar').classList.remove('visible'); }
+    if (r.outcome === 'accepted') { showToast('✅ App installée !'); document.getElementById('installBar').classList.remove('visible'); }
     state.deferredInstall = null;
   });
 }
-function dismissInstall() {
-  localStorage.setItem('gv_nodl', '1');
-  document.getElementById('installBar').classList.remove('visible');
-}
+function dismissInstall() { localStorage.setItem('gv_nodl','1'); document.getElementById('installBar').classList.remove('visible'); }
 
-// ================================================================
+// ════════════════════════════════════════════════════════════
 // SERVICE WORKER
-// ================================================================
+// ════════════════════════════════════════════════════════════
 function registerSW() {
   if (!('serviceWorker' in navigator)) return;
-  const sw = `const C='gv-v1';const A=['/'];self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(A)));self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim());});self.addEventListener('fetch',e=>{if(e.request.url.includes('script.google.com')){e.respondWith(fetch(e.request));return;}e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});`;
+  const sw = `const C='gv-v2';self.addEventListener('install',e=>{self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim());});self.addEventListener('fetch',e=>{if(e.request.url.includes('script.google.com')){e.respondWith(fetch(e.request));return;}e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});`;
   const blob = new Blob([sw], { type: 'application/javascript' });
   navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
 }
 
-// ================================================================
+// ════════════════════════════════════════════════════════════
 // UTILS
-// ================================================================
+// ════════════════════════════════════════════════════════════
+async function fetchJSON(url) {
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
 function monthKey(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1); }
 function mkLabel(mk) {
   const M = ['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','oct.','nov.','déc.'];
   const [y,m] = mk.split('-');
   return M[parseInt(m)-1] + ' ' + y;
 }
-function pad(n) { return String(n).padStart(2, '0'); }
-function initials(n) { return n.split(' ').map(p => p[0]||'').join('').substring(0,2).toUpperCase(); }
+function pad(n) { return String(n).padStart(2,'0'); }
+function initials(n) { return n.split(' ').map(p=>p[0]||'').join('').substring(0,2).toUpperCase(); }
+function getShiftClass(shift, hours) {
+  if (shift === 'HORAIRE') {
+    if (/^9h30/i.test(hours)) return 's-H9H30';
+    if (/^10h/i.test(hours))  return 's-H10';
+    if (/^9h/i.test(hours))   return 's-H9';
+    return 's-HORAIRE';
+  }
+  return 's-' + (CONFIG.SHIFTS[shift] ? shift : 'default');
+}
 function calcH(hours, shift) {
-  if (['REPOS','CONGES'].includes(shift)) return 0;
+  if (['REPOS','CONGES','CONGESMAT','CONGESPAT','CONGESPATERNITE','RTT'].includes(shift)) return 0;
   if (shift === 'JOURNEE') return 7;
   const m = hours.match(/(\d+)h(\d*)\s*[-\/]\s*(\d+)h(\d*)/);
-  if (m) {
-    const s = parseInt(m[1]) + (parseInt(m[2]||0)/60);
-    const e = parseInt(m[3]) + (parseInt(m[4]||0)/60);
-    return Math.max(0, e - s);
-  }
+  if (m) { const s=parseInt(m[1])+(parseInt(m[2]||0)/60); const e=parseInt(m[3])+(parseInt(m[4]||0)/60); return Math.max(0,e-s); }
   return 0;
 }
-function lsSet(k,v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(_){} }
-function lsGet(k)   { try { return JSON.parse(localStorage.getItem(k)); } catch(_){ return null; } }
+let _tt=null;
+function showToast(msg) {
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.classList.add('show');
+  if(_tt) clearTimeout(_tt);
+  _tt=setTimeout(()=>el.classList.remove('show'),3000);
+}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(_){}}
+function lsGet(k){try{return JSON.parse(localStorage.getItem(k));}catch(_){return null;}}
 </script>
 
 <script>
-// Manifest PWA inline
-const m = {name:'GammVert Planning',short_name:'Planning',start_url:'./',display:'standalone',
+const _m={name:'GammVert Planning',short_name:'Planning',start_url:'./',display:'standalone',
   background_color:'#0d3b18',theme_color:'#1a6b2a',lang:'fr',
   icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%231a6b2a'/%3E%3Ctext y='140' x='20' font-size='130'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E",sizes:'192x192',type:'image/svg+xml'}]};
-const bl = new Blob([JSON.stringify(m)],{type:'application/json'});
-const lk = document.createElement('link');
-lk.rel='manifest'; lk.href=URL.createObjectURL(bl);
-document.head.appendChild(lk);
+const _bl=new Blob([JSON.stringify(_m)],{type:'application/json'});
+const _lk=document.createElement('link');
+_lk.rel='manifest';_lk.href=URL.createObjectURL(_bl);
+document.head.appendChild(_lk);
 </script>
 </body>
 </html>
