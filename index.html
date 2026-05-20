@@ -372,8 +372,8 @@ const CFG = {
     'REPOS':'Repos','CONGES':'Congés','CONGESMAT':'Cong.Mat.',
     'CONGESPAT':'Cong.Pat.','CONGESPATERNITE':'Cong.Pat.',
     'AT':'AT','RTT':'RTT','REL':'REL','RECUP':'Récup.',
-    'CFA':'CFA','JOURNEE':'Journée','FORMATION':'Formation',
-    'REUNION':'Réunion','HORAIRE':'',
+    'CFA':'CFA','JOURNEE':'Journée','FORMATION':'REUN./FORM.',
+    'REUNION':'REUN./FORM.','HORAIRE':'',
   },
 
   POLL: 5 * 60 * 1000,
@@ -438,10 +438,11 @@ function loginAs(emp, animate = true) {
   document.getElementById('hdrSub').textContent = S.isAdmin ? 'GammVert Cazères · Admin' : 'GammVert Cazères · Lecture seule';
   document.getElementById('adminBadge').style.display = S.isAdmin ? 'block' : 'none';
 
-  // UI spécifique admin
-  document.getElementById('tabBar').style.display    = S.isAdmin ? 'flex' : 'none';
-  document.getElementById('bottomNav').style.display = S.isAdmin ? 'flex' : 'none';
-  document.getElementById('filterBtnMy').style.display = S.isAdmin ? 'flex' : 'none';
+  // Vue équipe accessible à tous, filtre mois admin seulement
+  document.getElementById('tabBar').style.display    = 'flex';
+  document.getElementById('bottomNav').style.display = 'flex';
+  document.getElementById('filterBtnMy').style.display   = S.isAdmin ? 'flex' : 'none';
+  document.getElementById('filterBtnTeam').style.display = S.isAdmin ? 'flex' : 'none';
 
   showScreen('appScreen');
   if (animate) showToast('Bonjour ' + emp.name.split(' ')[0] + ' 👋');
