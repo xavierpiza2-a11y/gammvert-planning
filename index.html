@@ -72,6 +72,27 @@ input{font-family:inherit}
 .drag-handle:active{cursor:grabbing}
 .emp-item.drag-over{border-top:2px solid var(--g600)}
 
+
+/* ══ PIN INPUT MODAL (4 cases) ══ */
+.pin-boxes{display:flex;gap:10px;justify-content:center;margin:8px 0 4px}
+.pin-box{width:48px;height:56px;border-radius:12px;border:2px solid var(--s200);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;font-weight:700;color:var(--s900);
+  background:var(--s100);transition:border-color .15s,background .15s}
+.pin-box.active{border-color:var(--g600);background:var(--white);box-shadow:0 0 0 3px var(--g100)}
+.pin-box.filled::after{content:'●';font-size:18px;color:var(--g700)}
+.pin-box.has-val::after{content:'●';font-size:18px;color:var(--g700)}
+.modal-pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.modal-pin-key{height:50px;border-radius:10px;background:var(--s100);font-size:18px;
+  font-weight:600;color:var(--s900);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .1s,transform .1s;user-select:none;-webkit-user-select:none}
+.modal-pin-key:active{background:var(--g100);transform:scale(.94)}
+.modal-pin-key.del-key{font-size:15px}
+.modal-pin-key.empty-key{background:transparent;pointer-events:none}
+.pin-clear-link{text-align:center;margin-top:6px}
+.pin-clear-link button{font-size:12px;color:var(--red);font-weight:600;padding:4px 10px;
+  border-radius:8px;background:var(--red-bg)}
+
 /* ══ CHAMP MOT DE PASSE DANS MODAL EMPLOYÉ ══ */
 .pin-modal-row{display:flex;gap:8px;align-items:center}
 .pin-preview{display:flex;gap:6px}
@@ -453,17 +474,28 @@ input{font-family:inherit}
     <div class="modal-field">
       <div class="modal-label">Code PIN (4 chiffres)</div>
       <div id="pinActiveBadgeWrap"></div>
-      <div class="pin-modal-row" style="margin-top:6px">
-        <input class="modal-input" id="pinInput" type="password" inputmode="numeric" maxlength="4"
-               placeholder="Laisser vide = sans PIN" style="flex:1"
-               oninput="updatePinPreview()">
-        <button class="pin-clear-btn" onclick="clearPin()">✕ Effacer</button>
+      <div class="pin-boxes">
+        <div class="pin-box" id="mpb0"></div>
+        <div class="pin-box" id="mpb1"></div>
+        <div class="pin-box" id="mpb2"></div>
+        <div class="pin-box" id="mpb3"></div>
       </div>
-      <div class="pin-preview" id="pinPreview" style="display:flex;gap:8px;margin-top:8px;justify-content:center">
-        <div class="pin-preview-dot" id="ppd0"></div>
-        <div class="pin-preview-dot" id="ppd1"></div>
-        <div class="pin-preview-dot" id="ppd2"></div>
-        <div class="pin-preview-dot" id="ppd3"></div>
+      <div class="modal-pin-grid">
+        <button class="modal-pin-key" onclick="modalPinKey('1')">1</button>
+        <button class="modal-pin-key" onclick="modalPinKey('2')">2</button>
+        <button class="modal-pin-key" onclick="modalPinKey('3')">3</button>
+        <button class="modal-pin-key" onclick="modalPinKey('4')">4</button>
+        <button class="modal-pin-key" onclick="modalPinKey('5')">5</button>
+        <button class="modal-pin-key" onclick="modalPinKey('6')">6</button>
+        <button class="modal-pin-key" onclick="modalPinKey('7')">7</button>
+        <button class="modal-pin-key" onclick="modalPinKey('8')">8</button>
+        <button class="modal-pin-key" onclick="modalPinKey('9')">9</button>
+        <button class="modal-pin-key empty-key"></button>
+        <button class="modal-pin-key" onclick="modalPinKey('0')">0</button>
+        <button class="modal-pin-key del-key" onclick="modalPinDel()">⌫</button>
+      </div>
+      <div class="pin-clear-link">
+        <button onclick="modalPinClear()">✕ Supprimer le PIN</button>
       </div>
     </div>
 
@@ -526,6 +558,7 @@ const S = {
   pendingEmp: null, pinBuffer: '', pinVerified: false,
   // Admin modal
   editIdx: -1, editColor: '#1a6b2a', editHasPin: false,
+  modalPin: '', modalPinKeep: false,
   // Admin months (draft)
   draftMonths: [],
 };
@@ -882,14 +915,14 @@ function openEmpModal(idx = -1) {
   S.editIdx = idx;
   const emp = idx >= 0 ? S.employees[idx] : null;
   document.getElementById('empModalTitle').textContent = emp ? 'Modifier ' + emp.name : 'Nouvel employé';
-  document.getElementById('empNameInput').value  = emp ? emp.name : '';
-  document.getElementById('pinInput').value = '';   // on ne remonte jamais le hash
-  S.editColor = emp ? emp.color : '#1a6b2a';
-  S.editHasPin = emp && !!emp.pin;                  // indique si un PIN existe déjà
-  updatePinPreview();
+  document.getElementById('empNameInput').value = emp ? emp.name : '';
+  S.editColor  = emp ? emp.color : '#1a6b2a';
+  S.editHasPin = emp && !!emp.pin;
+  S.modalPin      = '';
+  S.modalPinKeep  = emp && !!emp.pin; // conserver l'ancien PIN si on ne saisit rien
+  renderModalPinBoxes();
   // Afficher "●●●●" si un PIN existe déjà
-  const pinInp = document.getElementById('pinInput');
-  pinInp.placeholder = (emp && emp.pin) ? 'Laisser vide = conserver le PIN actuel' : 'Laisser vide = sans PIN';
+  // Plus de champ input — le badge indique l'état du PIN
   // Afficher un badge "PIN actif" si un PIN est déjà défini
   const pinRow = document.getElementById('pinActiveBadgeWrap');
   let badge = pinRow.querySelector('.pin-active-badge');
@@ -925,14 +958,15 @@ async function saveEmp() {
   const name = document.getElementById('empNameInput').value.trim();
   if (!name) { showToast('Veuillez saisir un nom'); return; }
 
-  const pinVal = document.getElementById('pinInput').value.trim();
   let pinHash = '';
-  if (pinVal) {
-    if (!/^\d{4}$/.test(pinVal)) { showToast('Le PIN doit être 4 chiffres'); return; }
-    pinHash = simpleHash(pinVal);
-  } else if (S.editIdx >= 0 && S.employees[S.editIdx]?.pin) {
-    pinHash = S.employees[S.editIdx].pin; // conserver l'ancien
+  if (S.modalPin.length === 4) {
+    pinHash = simpleHash(S.modalPin);
+  } else if (S.modalPin.length > 0) {
+    showToast('Le PIN doit être 4 chiffres'); return;
+  } else if (S.modalPinKeep && S.editIdx >= 0 && S.employees[S.editIdx]?.pin) {
+    pinHash = S.employees[S.editIdx].pin; // conserver l'ancien PIN
   }
+  // Si S.modalPin vide et S.modalPinKeep=false → supprimer le PIN
   const updated = [...S.employees];
   const empObj = { name, color: S.editColor };
   if (pinHash) empObj.pin = pinHash;
@@ -1029,16 +1063,31 @@ function simpleHash(pin) {
   return (h >>> 0).toString(36);
 }
 
-// ── Prévisualisation PIN dans le modal ──
-function updatePinPreview() {
-  const val = document.getElementById('pinInput').value;
-  for (let i = 0; i < 4; i++) {
-    document.getElementById('ppd' + i).classList.toggle('set', i < val.length);
-  }
+// ── PIN modal : 4 cases sans champ input ──
+function modalPinKey(digit) {
+  if (S.modalPin.length >= 4) return;
+  S.modalPin += digit;
+  renderModalPinBoxes();
 }
-function clearPin() {
-  document.getElementById('pinInput').value = '';
-  updatePinPreview();
+function modalPinDel() {
+  S.modalPin = S.modalPin.slice(0, -1);
+  renderModalPinBoxes();
+}
+function modalPinClear() {
+  S.modalPin = '';
+  S.modalPinKeep = false;
+  renderModalPinBoxes();
+  const wrap = document.getElementById('pinActiveBadgeWrap');
+  if (wrap) wrap.innerHTML = '';
+}
+function renderModalPinBoxes() {
+  for (let i = 0; i < 4; i++) {
+    const box = document.getElementById('mpb' + i);
+    if (!box) continue;
+    box.classList.remove('active','has-val');
+    if (i < S.modalPin.length) box.classList.add('has-val');
+    else if (i === S.modalPin.length) box.classList.add('active');
+  }
 }
 
 // ═══════════════════════════════════════════════
