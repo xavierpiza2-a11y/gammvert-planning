@@ -44,41 +44,6 @@ input{font-family:inherit}
 .emp-grid{display:flex;flex-direction:column;gap:7px}
 .emp-btn{display:flex;align-items:center;gap:11px;padding:12px 13px;border:1.5px solid var(--s200);border-radius:var(--r);background:var(--white);transition:border-color .15s,background .15s,transform .1s;text-align:left;width:100%}
 .emp-btn:active{transform:scale(.98)}
-
-/* ══ PIN SCREEN ══ */
-#pinScreen{background:var(--g900);overflow:hidden;position:relative}
-#pinScreen::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(46,163,73,.25) 0%,transparent 70%);border-radius:50%}
-.pin-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:52px 20px 40px;flex:1}
-.pin-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--white);margin-bottom:14px;border:3px solid rgba(255,255,255,.3);animation:logoIn .4s ease-out}
-.pin-name{font-size:20px;font-weight:700;color:var(--white);margin-bottom:6px}
-.pin-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:32px}
-.pin-card{width:100%;max-width:360px;background:var(--white);border-radius:18px;padding:24px 22px;box-shadow:var(--shadow-lg)}
-.pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:24px}
-.pin-dot{width:14px;height:14px;border-radius:50%;background:var(--s200);transition:background .15s,transform .15s}
-.pin-dot.filled{background:var(--g600);transform:scale(1.1)}
-.pin-dot.error{background:var(--red)}
-.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.pin-key{height:56px;border-radius:12px;background:var(--s100);font-size:20px;font-weight:600;color:var(--s900);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .1s,transform .1s;user-select:none;-webkit-user-select:none}
-.pin-key:active{background:var(--g100);transform:scale(.94)}
-.pin-key.del{font-size:16px}
-.pin-key.empty{background:transparent;pointer-events:none}
-.pin-back{margin-top:16px;text-align:center}
-.pin-back-btn{font-size:13px;color:rgba(255,255,255,.5);padding:8px 16px}
-
-/* ══ ORDRE EMPLOYÉS (drag) ══ */
-.emp-item{cursor:default}
-.emp-item.dragging{opacity:.4}
-.drag-handle{font-size:18px;color:var(--s300);cursor:grab;padding:0 4px;touch-action:none}
-.drag-handle:active{cursor:grabbing}
-.emp-item.drag-over{border-top:2px solid var(--g600)}
-
-/* ══ CHAMP MOT DE PASSE DANS MODAL EMPLOYÉ ══ */
-.pin-modal-row{display:flex;gap:8px;align-items:center}
-.pin-preview{display:flex;gap:6px}
-.pin-preview-dot{width:10px;height:10px;border-radius:50%;background:var(--s200)}
-.pin-preview-dot.set{background:var(--g600)}
-.pin-clear-btn{font-size:12px;color:var(--red);font-weight:600;padding:4px 8px;border-radius:6px;background:var(--red-bg)}
-
 .emp-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--white);flex-shrink:0}
 .emp-name{font-size:14px;font-weight:600;color:var(--s900)}
 .emp-arrow{margin-left:auto;color:var(--s400);font-size:17px}
@@ -276,39 +241,6 @@ input{font-family:inherit}
   </div>
 </div>
 
-
-<!-- ══ PIN SCREEN ══ -->
-<div id="pinScreen" class="screen">
-  <div class="pin-inner">
-    <div class="pin-avatar" id="pinAvatar"></div>
-    <div class="pin-name" id="pinEmpName"></div>
-    <div class="pin-sub">Entrez votre code PIN</div>
-    <div class="pin-card">
-      <div class="pin-dots" id="pinDots">
-        <div class="pin-dot" id="pd0"></div>
-        <div class="pin-dot" id="pd1"></div>
-        <div class="pin-dot" id="pd2"></div>
-        <div class="pin-dot" id="pd3"></div>
-      </div>
-      <div class="pin-grid">
-        <button class="pin-key" onclick="pinKey('1')">1</button>
-        <button class="pin-key" onclick="pinKey('2')">2</button>
-        <button class="pin-key" onclick="pinKey('3')">3</button>
-        <button class="pin-key" onclick="pinKey('4')">4</button>
-        <button class="pin-key" onclick="pinKey('5')">5</button>
-        <button class="pin-key" onclick="pinKey('6')">6</button>
-        <button class="pin-key" onclick="pinKey('7')">7</button>
-        <button class="pin-key" onclick="pinKey('8')">8</button>
-        <button class="pin-key" onclick="pinKey('9')">9</button>
-        <button class="pin-key empty"></button>
-        <button class="pin-key" onclick="pinKey('0')">0</button>
-        <button class="pin-key del" onclick="pinDel()">⌫</button>
-      </div>
-    </div>
-    <div class="pin-back"><button class="pin-back-btn" onclick="pinBack()">← Changer de profil</button></div>
-  </div>
-</div>
-
 <!-- ══ APP ══ -->
 <div id="appScreen" class="screen">
 
@@ -437,23 +369,6 @@ input{font-family:inherit}
     <div class="modal-field">
       <div class="modal-label">Couleur</div>
     </div>
-    
-    <div class="modal-field">
-      <div class="modal-label">Code PIN (4 chiffres)</div>
-      <div class="pin-modal-row">
-        <div class="pin-preview" id="pinPreview">
-          <div class="pin-preview-dot" id="ppd0"></div>
-          <div class="pin-preview-dot" id="ppd1"></div>
-          <div class="pin-preview-dot" id="ppd2"></div>
-          <div class="pin-preview-dot" id="ppd3"></div>
-        </div>
-        <input class="modal-input" id="pinInput" type="password" inputmode="numeric" maxlength="4"
-               placeholder="Laisser vide = sans PIN" style="flex:1"
-               oninput="updatePinPreview()">
-        <button class="pin-clear-btn" onclick="clearPin()">Effacer</button>
-      </div>
-    </div>
-
     <div class="color-grid" id="colorGrid"></div>
     <div class="modal-actions">
       <button class="modal-btn modal-cancel" onclick="closeEmpModal()">Annuler</button>
@@ -506,9 +421,8 @@ const S = {
   dateMy: new Date(), dateTeam: new Date(),
   cache: {}, lastUpdate: {}, teamCache: {},
   pollTimer: null, deferredInstall: null,
-  pendingEmp: null, pinBuffer: '',
   // Admin modal
-  editIdx: -1, editColor: '#1a6b2a', editHasPin: false,
+  editIdx: -1, editColor: '#1a6b2a',
   // Admin months (draft)
   draftMonths: [],
 };
@@ -558,12 +472,6 @@ function buildLoginList() {
 }
 
 function loginAs(emp, animate = true) {
-  // Si l'employé a un PIN et que ce n'est pas une reconnexion auto, demander le PIN
-  if (emp.pin && animate) {
-    S.pendingEmp = emp;
-    showPinScreen(emp);
-    return;
-  }
   S.emp = emp;
   S.isAdmin = emp.name === ADMIN_NAME;
   localStorage.setItem('gv_emp', emp.name);
@@ -806,16 +714,14 @@ function renderTeam(results) {
 function renderAdmin() {
   // Liste employés
   document.getElementById('adminEmpList').innerHTML = S.employees.map((emp, i) => `
-    <div class="emp-item" data-idx="${i}">
-      <span class="drag-handle" title="Glisser pour réordonner">⠿</span>
+    <div class="emp-item">
       <div class="emp-item-dot" style="background:${emp.color}" onclick="openEmpModal(${i})">${ini(emp.name)}</div>
-      <span class="emp-item-name">${emp.name}${emp.pin ? ' 🔒' : ''}</span>
+      <span class="emp-item-name">${emp.name}</span>
       <div class="emp-item-actions">
         <button class="emp-action-btn btn-edit" onclick="openEmpModal(${i})">✏️</button>
         <button class="emp-action-btn btn-del"  onclick="deleteEmp(${i})">🗑</button>
       </div>
     </div>`).join('');
-  setTimeout(initDragDrop, 50);
 
   // Liste mois
   S.draftMonths = [...S.visibleMonths];
@@ -859,13 +765,7 @@ function openEmpModal(idx = -1) {
   const emp = idx >= 0 ? S.employees[idx] : null;
   document.getElementById('empModalTitle').textContent = emp ? 'Modifier ' + emp.name : 'Nouvel employé';
   document.getElementById('empNameInput').value  = emp ? emp.name : '';
-  document.getElementById('pinInput').value = '';   // on ne remonte jamais le hash
   S.editColor = emp ? emp.color : '#1a6b2a';
-  S.editHasPin = emp && !!emp.pin;                  // indique si un PIN existe déjà
-  updatePinPreview();
-  // Afficher "●●●●" si un PIN existe déjà
-  const pinInp = document.getElementById('pinInput');
-  pinInp.placeholder = (emp && emp.pin) ? '(PIN déjà défini — laisser vide pour conserver)' : 'Laisser vide = sans PIN';
   renderColorGrid();
   document.getElementById('empModal').classList.add('open');
 }
@@ -888,19 +788,9 @@ async function saveEmp() {
   const name = document.getElementById('empNameInput').value.trim();
   if (!name) { showToast('Veuillez saisir un nom'); return; }
 
-  const pinVal = document.getElementById('pinInput').value.trim();
-  let pinHash = '';
-  if (pinVal) {
-    if (!/^\d{4}$/.test(pinVal)) { showToast('Le PIN doit être 4 chiffres'); return; }
-    pinHash = simpleHash(pinVal);
-  } else if (S.editIdx >= 0 && S.employees[S.editIdx]?.pin) {
-    pinHash = S.employees[S.editIdx].pin; // conserver l'ancien
-  }
   const updated = [...S.employees];
-  const empObj = { name, color: S.editColor };
-  if (pinHash) empObj.pin = pinHash;
-  if (S.editIdx >= 0) updated[S.editIdx] = empObj;
-  else updated.push(empObj);
+  if (S.editIdx >= 0) updated[S.editIdx] = { name, color: S.editColor };
+  else updated.push({ name, color: S.editColor });
 
   await pushEmployees(updated);
   document.getElementById('empModal').classList.remove('open');
@@ -925,143 +815,6 @@ async function pushEmployees(list) {
     renderAdmin();
     showToast('✅ Équipe mise à jour');
   } catch (err) { showToast('❌ ' + err.message); }
-}
-
-
-// ═══════════════════════════════════════════════
-// PIN
-// ═══════════════════════════════════════════════
-function showPinScreen(emp) {
-  const av = document.getElementById('pinAvatar');
-  av.textContent = ini(emp.name);
-  av.style.background = emp.color;
-  document.getElementById('pinEmpName').textContent = emp.name;
-  S.pinBuffer = '';
-  updatePinDots(false);
-  showScreen('pinScreen');
-  document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('error'));
-}
-
-function pinKey(digit) {
-  if (S.pinBuffer.length >= 4) return;
-  S.pinBuffer += digit;
-  updatePinDots(false);
-  if (S.pinBuffer.length === 4) {
-    setTimeout(() => checkPin(), 100);
-  }
-}
-
-function pinDel() {
-  S.pinBuffer = S.pinBuffer.slice(0, -1);
-  updatePinDots(false);
-}
-
-function pinBack() {
-  S.pendingEmp = null; S.pinBuffer = '';
-  showScreen('loginScreen');
-}
-
-function updatePinDots(error) {
-  for (let i = 0; i < 4; i++) {
-    const d = document.getElementById('pd' + i);
-    d.classList.toggle('filled', i < S.pinBuffer.length);
-    d.classList.toggle('error', error);
-  }
-}
-
-function checkPin() {
-  const emp = S.pendingEmp;
-  if (!emp) return;
-  // Hash simple (XOR + base36) — suffisant pour un usage interne
-  const inputHash = simpleHash(S.pinBuffer);
-  if (inputHash === emp.pin) {
-    S.pendingEmp = null; S.pinBuffer = '';
-    loginAs(emp, true);        // relance sans PIN (animate=true mais pin déjà vérifié)
-  } else {
-    updatePinDots(true);
-    navigator.vibrate?.(200);
-    setTimeout(() => { S.pinBuffer = ''; updatePinDots(false); }, 800);
-  }
-}
-
-// Hash simple — pas cryptographique mais suffisant pour un PIN d'usage interne
-function simpleHash(pin) {
-  let h = 5381;
-  for (let i = 0; i < pin.length; i++) h = ((h << 5) + h) + pin.charCodeAt(i);
-  return (h >>> 0).toString(36);
-}
-
-// ── Prévisualisation PIN dans le modal ──
-function updatePinPreview() {
-  const val = document.getElementById('pinInput').value;
-  for (let i = 0; i < 4; i++) {
-    document.getElementById('ppd' + i).classList.toggle('set', i < val.length);
-  }
-}
-function clearPin() {
-  document.getElementById('pinInput').value = '';
-  updatePinPreview();
-}
-
-// ═══════════════════════════════════════════════
-// DRAG & DROP ORDRE EMPLOYÉS
-// ═══════════════════════════════════════════════
-let _dragIdx = -1;
-
-function initDragDrop() {
-  const list = document.getElementById('adminEmpList');
-  list.querySelectorAll('.emp-item').forEach((item, i) => {
-    const handle = item.querySelector('.drag-handle');
-    // Touch
-    handle.addEventListener('touchstart', e => {
-      _dragIdx = i;
-      item.classList.add('dragging');
-      e.preventDefault();
-    }, { passive: false });
-
-    handle.addEventListener('touchmove', e => {
-      if (_dragIdx < 0) return;
-      e.preventDefault();
-      const touch = e.touches[0];
-      const target = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.emp-item');
-      list.querySelectorAll('.emp-item').forEach(el => el.classList.remove('drag-over'));
-      if (target && target !== item) target.classList.add('drag-over');
-    }, { passive: false });
-
-    handle.addEventListener('touchend', e => {
-      if (_dragIdx < 0) return;
-      item.classList.remove('dragging');
-      const target = document.querySelector('.emp-item.drag-over');
-      if (target) {
-        target.classList.remove('drag-over');
-        const targetIdx = parseInt(target.dataset.idx);
-        if (targetIdx !== _dragIdx) reorderEmp(_dragIdx, targetIdx);
-      }
-      _dragIdx = -1;
-    });
-
-    // Mouse (desktop)
-    handle.addEventListener('dragstart', e => { _dragIdx = i; item.classList.add('dragging'); });
-    item.addEventListener('dragover',  e => { e.preventDefault(); item.classList.add('drag-over'); });
-    item.addEventListener('dragleave', ()  => item.classList.remove('drag-over'));
-    item.addEventListener('drop',      ()  => {
-      item.classList.remove('drag-over');
-      if (_dragIdx !== i) reorderEmp(_dragIdx, i);
-    });
-    item.addEventListener('dragend',   ()  => { item.classList.remove('dragging'); _dragIdx = -1; });
-    item.draggable = true;
-    item.dataset.idx = i;
-  });
-}
-
-function reorderEmp(fromIdx, toIdx) {
-  const updated = [...S.employees];
-  const [moved] = updated.splice(fromIdx, 1);
-  updated.splice(toIdx, 0, moved);
-  S.employees = updated;
-  renderAdmin();
-  // Sauvegarder automatiquement
-  pushEmployees(S.employees);
 }
 
 // ═══════════════════════════════════════════════
