@@ -572,17 +572,31 @@ window.addEventListener('load', () => {
 });
 
 async function loadConfig() {
+  // Charger le cache local EN PREMIER (il contient les pins)
+  const cachedEmps    = lsGet('gv_emp_list') || [];
+  const cachedMonths  = lsGet('gv_months')   || ALL_MONTHS.map(m => m.key);
+  S.employees     = cachedEmps;
+  S.visibleMonths = cachedMonths;
+
   try {
     const cfg = await fetchJSON(API + '?action=getConfig');
-    S.employees     = cfg.employees     || [];
-    S.visibleMonths = cfg.visibleMonths || ALL_MONTHS.map(m => m.key);
+    // Fusionner : prendre les noms/couleurs du serveur + les pins du cache local
+    const serverEmps = cfg.employees || [];
+    S.employees = serverEmps.map(se => {
+      const cached = cachedEmps.find(ce => ce.name === se.name);
+      return { ...se, pin: cached?.pin || se.pin || '' };
+    });
+    // Ajouter les employés cachés non présents sur le serveur (cas hors-ligne)
+    cachedEmps.forEach(ce => {
+      if (!S.employees.find(e => e.name === ce.name)) S.employees.push(ce);
+    });
+    S.visibleMonths = cfg.visibleMonths || cachedMonths;
     lsSet('gv_emp_list', S.employees);
     lsSet('gv_months',   S.visibleMonths);
   } catch (_) {
-    // Fallback cache local
-    S.employees     = lsGet('gv_emp_list') || [];
-    S.visibleMonths = lsGet('gv_months')   || ALL_MONTHS.map(m => m.key);
+    // Fallback : garder le cache local (avec les pins)
   }
+
   buildLoginList();
   const saved = localStorage.getItem('gv_emp');
   if (saved && S.employees.find(e => e.name === saved)) {
@@ -737,9 +751,23 @@ async function poll() {
 }
 
 function syncConfig(data) {
-  // Mettre à jour la config si le serveur en envoie
-  if (data.visibleMonths) { S.visibleMonths = data.visibleMonths; lsSet('gv_months', S.visibleMonths); renderNav('my'); renderNav('team'); }
-  if (data.employees && data.employees.length) { S.employees = data.employees; lsSet('gv_emp_list', S.employees); }
+  // Mettre à jour les mois visibles
+  if (data.visibleMonths) {
+    S.visibleMonths = data.visibleMonths;
+    lsSet('gv_months', S.visibleMonths);
+    renderNav('my'); renderNav('team');
+  }
+  // Mettre à jour les employés SEULEMENT si la liste serveur contient des pins
+  // ou si on n'a pas encore de liste locale (évite d'écraser les pins en mémoire)
+  if (data.employees && data.employees.length) {
+    const serverHasPins = data.employees.some(e => e.pin);
+    const localHasPins  = S.employees.some(e => e.pin);
+    if (serverHasPins || !localHasPins) {
+      S.employees = data.employees;
+      lsSet('gv_emp_list', S.employees);
+      buildLoginList();
+    }
+  }
 }
 
 async function loadTeam() {
@@ -990,7 +1018,13 @@ async function pushEmployees(list) {
     const url  = API + '?action=setEmployees&admin=' + enc(ADMIN_NAME) + '&employees=' + enc(JSON.stringify(list));
     const data = await fetchJSON(url);
     if (data.error) throw new Error(data.error);
-    S.employees = data.employees; lsSet('gv_emp_list', S.employees);
+    // Fusionner : conserver les pins de la liste envoyée (le serveur les retourne aussi)
+    const returned = data.employees || [];
+    S.employees = returned.map(se => {
+      const sent = list.find(e => e.name === se.name);
+      return { ...se, pin: sent?.pin || se.pin || '' };
+    });
+    lsSet('gv_emp_list', S.employees);
     S.teamCache = {};
     buildLoginList();
     renderAdmin();
