@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#1a6b2a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>GammVert · Planning</title>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -44,6 +45,29 @@ input{font-family:inherit}
 .emp-grid{display:flex;flex-direction:column;gap:7px}
 .emp-btn{display:flex;align-items:center;gap:11px;padding:12px 13px;border:1.5px solid var(--s200);border-radius:var(--r);background:var(--white);transition:border-color .15s,background .15s,transform .1s;text-align:left;width:100%}
 .emp-btn:active{transform:scale(.98)}
+
+
+/* ══ CARTE CHANGEMENTS ══ */
+.changes-overlay{position:fixed;inset:0;z-index:150;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.3)}
+.changes-overlay.open{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.changes-card{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;
+  padding:0 0 32px;animation:sheetUp .3s cubic-bezier(.34,1.2,.64,1);max-height:75dvh;overflow-y:auto}
+.changes-handle{width:40px;height:4px;background:var(--s300);border-radius:2px;margin:12px auto}
+.changes-header{padding:4px 20px 12px;border-bottom:1px solid var(--s200)}
+.changes-title{font-size:16px;font-weight:700;color:var(--s900);display:flex;align-items:center;gap:8px}
+.changes-sub{font-size:12px;color:var(--s400);margin-top:3px}
+.changes-list{padding:8px 16px}
+.change-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--s100)}
+.change-row:last-child{border-bottom:none}
+.change-date{font-size:12px;font-weight:600;color:var(--s700);min-width:88px;flex-shrink:0}
+.change-vals{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap}
+.change-old{font-size:11px;font-weight:600;background:var(--red-bg);color:var(--red);
+  padding:3px 8px;border-radius:8px;text-decoration:line-through;opacity:.8}
+.change-arrow{font-size:14px;color:var(--s400)}
+.change-new{font-size:11px;font-weight:700;background:var(--g100);color:var(--g700);padding:3px 8px;border-radius:8px}
+.changes-close{display:block;margin:12px 16px 0;padding:12px;border-radius:24px;
+  background:var(--g600);color:var(--white);font-size:14px;font-weight:700;text-align:center;width:calc(100% - 32px)}
 
 /* ══ PIN SCREEN ══ */
 #pinScreen{background:var(--g900);overflow:hidden;position:relative}
@@ -331,6 +355,20 @@ input{font-family:inherit}
   </div>
 </div>
 
+
+
+<!-- ══ CARTE CHANGEMENTS ══ -->
+<div class="changes-overlay" id="changesOverlay" onclick="closeChanges(event)">
+  <div class="changes-card" onclick="event.stopPropagation()">
+    <div class="changes-handle"></div>
+    <div class="changes-header">
+      <div class="changes-title">📋 Votre planning a changé</div>
+      <div class="changes-sub" id="changesDate"></div>
+    </div>
+    <div class="changes-list" id="changesList"></div>
+    <button class="changes-close" onclick="closeChanges()">J'ai compris ✓</button>
+  </div>
+</div>
 
 <!-- ══ PIN SCREEN ══ -->
 <div id="pinScreen" class="screen">
@@ -667,6 +705,8 @@ function loginAs(emp, animate = true) {
 
   showScreen('appScreen');
   if (animate) showToast('Bonjour ' + emp.name.split(' ')[0] + ' 👋');
+  initOneSignal(emp.name);
+  setTimeout(fetchAndShowChanges, 2000); // Laisser le planning charger
 
   clampDate('my'); clampDate('team');
   renderNav('my'); renderNav('team');
@@ -810,9 +850,10 @@ async function loadTeam() {
 
 function onChange(mk, ts) {
   S.lastUpdate[mk] = ts; S.teamCache = {};
-  showBanner(); sendNotif('Planning mis à jour 🌿', 'Votre planning ' + mkLbl(mk) + ' a changé.');
+  showBanner();
   showToast('🔔 Planning modifié !');
   document.getElementById('notifDot').style.display = 'block';
+  setTimeout(fetchAndShowChanges, 500);
 }
 
 // ═══════════════════════════════════════════════
@@ -1056,6 +1097,63 @@ async function pushEmployees(list) {
   } catch (err) { showToast('❌ ' + err.message); }
 }
 
+
+
+// ═══════════════════════════════════════════════
+// ONESIGNAL
+// ═══════════════════════════════════════════════
+function initOneSignal(employeeName) {
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    try {
+      await OneSignal.init({
+        appId:                     '30e7731d-a0bc-40d5-bba2-44ae179b64e0',
+        serviceWorkerPath:         'OneSignalSDKWorker.js',
+        serviceWorkerParam:        { scope: '/' },
+        notifyButton:              { enable: false },
+        allowLocalhostAsSecureOrigin: true,
+      });
+      // Demander la permission et taguer l'employé
+      await OneSignal.Notifications.requestPermission();
+      await OneSignal.User.addTag('employee', employeeName);
+      Logger.log && Logger.log('[OneSignal] Taggé: ' + employeeName);
+    } catch (err) {
+      console.warn('[OneSignal] Init error:', err);
+    }
+  });
+}
+
+// ── Afficher les changements ──
+async function fetchAndShowChanges() {
+  if (!S.emp) return;
+  try {
+    const data = await fetchJSON(API + '?action=getChanges&employee=' + enc(S.emp.name));
+    if (data.changes && data.changes.length > 0) {
+      showChangesCard(data.changes, data.timestamp);
+    }
+  } catch (_) {}
+}
+
+function showChangesCard(changes, ts) {
+  const d  = ts ? new Date(ts) : null;
+  const dt = d ? d.toLocaleDateString('fr-FR') + ' à ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '';
+  document.getElementById('changesDate').textContent = dt ? 'Modifié le ' + dt : '';
+  document.getElementById('changesList').innerHTML = changes.map(c => `
+    <div class="change-row">
+      <span class="change-date">${c.label}</span>
+      <div class="change-vals">
+        <span class="change-old">${c.old}</span>
+        <span class="change-arrow">→</span>
+        <span class="change-new">${c['new']}</span>
+      </div>
+    </div>`).join('');
+  document.getElementById('changesOverlay').classList.add('open');
+}
+
+function closeChanges(e) {
+  if (!e || e.target === document.getElementById('changesOverlay'))
+    document.getElementById('changesOverlay').classList.remove('open');
+}
 
 // ═══════════════════════════════════════════════
 // PIN
