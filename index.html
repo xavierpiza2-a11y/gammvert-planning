@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#1a6b2a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>GammVert · Planning</title>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -44,6 +45,29 @@ input{font-family:inherit}
 .emp-grid{display:flex;flex-direction:column;gap:7px}
 .emp-btn{display:flex;align-items:center;gap:11px;padding:12px 13px;border:1.5px solid var(--s200);border-radius:var(--r);background:var(--white);transition:border-color .15s,background .15s,transform .1s;text-align:left;width:100%}
 .emp-btn:active{transform:scale(.98)}
+
+
+/* ══ CARTE CHANGEMENTS ══ */
+.changes-overlay{position:fixed;inset:0;z-index:150;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.3)}
+.changes-overlay.open{display:flex;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.changes-card{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;
+  padding:0 0 32px;animation:sheetUp .3s cubic-bezier(.34,1.2,.64,1);max-height:75dvh;overflow-y:auto}
+.changes-handle{width:40px;height:4px;background:var(--s300);border-radius:2px;margin:12px auto}
+.changes-header{padding:4px 20px 12px;border-bottom:1px solid var(--s200)}
+.changes-title{font-size:16px;font-weight:700;color:var(--s900);display:flex;align-items:center;gap:8px}
+.changes-sub{font-size:12px;color:var(--s400);margin-top:3px}
+.changes-list{padding:8px 16px}
+.change-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--s100)}
+.change-row:last-child{border-bottom:none}
+.change-date{font-size:12px;font-weight:600;color:var(--s700);min-width:88px;flex-shrink:0}
+.change-vals{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap}
+.change-old{font-size:11px;font-weight:600;background:var(--red-bg);color:var(--red);
+  padding:3px 8px;border-radius:8px;text-decoration:line-through;opacity:.8}
+.change-arrow{font-size:14px;color:var(--s400)}
+.change-new{font-size:11px;font-weight:700;background:var(--g100);color:var(--g700);padding:3px 8px;border-radius:8px}
+.changes-close{display:block;margin:12px 16px 0;padding:12px;border-radius:24px;
+  background:var(--g600);color:var(--white);font-size:14px;font-weight:700;text-align:center;width:calc(100% - 32px)}
 
 /* ══ PIN SCREEN ══ */
 #pinScreen{background:var(--g900);overflow:hidden;position:relative}
@@ -164,6 +188,49 @@ input{font-family:inherit}
 .shift-hours{font-size:11px;color:var(--s500);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
 .today-tag{margin-left:auto;background:var(--g100);color:var(--g700);font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;flex-shrink:0;text-transform:uppercase}
 
+
+
+/* ══ HISTORIQUE ══ */
+.hist-btn{
+  width:32px;height:32px;border-radius:50%;
+  background:#eff6ff;color:#2563eb;
+  font-size:16px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .15s;
+}
+.hist-btn:active{background:#dbeafe}
+
+.hist-overlay{position:fixed;inset:0;z-index:150;display:none;
+  align-items:flex-end;justify-content:center;background:rgba(0,0,0,.3)}
+.hist-overlay.open{display:flex;animation:fadeIn .2s ease}
+.hist-card{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;
+  padding-bottom:32px;animation:sheetUp .3s cubic-bezier(.34,1.2,.64,1);
+  max-height:80dvh;display:flex;flex-direction:column}
+.hist-handle{width:40px;height:4px;background:var(--s300);border-radius:2px;margin:12px auto;flex-shrink:0}
+.hist-header{padding:4px 20px 12px;border-bottom:1px solid var(--s200);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hist-title{font-size:16px;font-weight:700;color:var(--s900);display:flex;align-items:center;gap:8px}
+.hist-emp{font-size:12px;color:var(--s400);margin-top:2px}
+.hist-scroll{flex:1;overflow-y:auto;padding:8px 16px}
+.hist-empty{text-align:center;color:var(--s400);font-size:13px;padding:32px 0}
+.hist-entry{border-bottom:1px solid var(--s100);padding:12px 0}
+.hist-entry:last-child{border-bottom:none}
+.hist-entry-date{font-size:11px;font-weight:700;color:var(--s400);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px}
+.hist-entry-date::after{content:'';flex:1;height:1px;background:var(--s200)}
+.hist-change-row{display:flex;align-items:center;gap:8px;padding:4px 0}
+.hist-day{font-size:12px;font-weight:600;color:var(--s700);min-width:88px;flex-shrink:0}
+.hist-from{font-size:11px;font-weight:600;background:var(--red-bg);color:var(--red);
+  padding:2px 7px;border-radius:7px;text-decoration:line-through;opacity:.8}
+.hist-arr{font-size:12px;color:var(--s400)}
+.hist-to{font-size:11px;font-weight:700;background:var(--g100);color:var(--g700);
+  padding:2px 7px;border-radius:7px}
+.hist-footer{padding:12px 16px 0;border-top:1px solid var(--s200);
+  display:flex;gap:10px;flex-shrink:0}
+.hist-clear-btn{flex:1;padding:11px;border-radius:22px;
+  background:var(--red-bg);color:var(--red);font-size:13px;font-weight:700;text-align:center}
+.hist-close-btn{flex:1;padding:11px;border-radius:22px;
+  background:var(--g600);color:var(--white);font-size:13px;font-weight:700;text-align:center}
 
 /* ══ COLONNE INFORMATION ══ */
 .info-badge{
@@ -332,6 +399,20 @@ input{font-family:inherit}
 </div>
 
 
+
+<!-- ══ CARTE CHANGEMENTS ══ -->
+<div class="changes-overlay" id="changesOverlay" onclick="closeChanges(event)">
+  <div class="changes-card" onclick="event.stopPropagation()">
+    <div class="changes-handle"></div>
+    <div class="changes-header">
+      <div class="changes-title">📋 Votre planning a changé</div>
+      <div class="changes-sub" id="changesDate"></div>
+    </div>
+    <div class="changes-list" id="changesList"></div>
+    <button class="changes-close" onclick="dismissChanges()">J'ai compris ✓</button>
+  </div>
+</div>
+
 <!-- ══ PIN SCREEN ══ -->
 <div id="pinScreen" class="screen">
   <div class="pin-inner">
@@ -472,6 +553,9 @@ input{font-family:inherit}
     </button>
     <button class="bnav-btn" id="bnavTeam" onclick="switchTab('team')">
       <span class="bnav-icon">👥</span><span>Équipe</span>
+    </button>
+    <button class="bnav-btn" id="bnavHist" onclick="openHist(S.emp.name)">
+      <span class="bnav-icon">📋</span><span>Historique</span>
     </button>
     <button class="bnav-btn" id="bnavAdmin" style="display:none" onclick="switchTab('admin')">
       <span class="bnav-icon">⚙️</span><span>Admin</span>
@@ -667,6 +751,8 @@ function loginAs(emp, animate = true) {
 
   showScreen('appScreen');
   if (animate) showToast('Bonjour ' + emp.name.split(' ')[0] + ' 👋');
+  initOneSignal(emp.name);
+  setTimeout(fetchAndShowChanges, 2000); // Laisser le planning charger
 
   clampDate('my'); clampDate('team');
   renderNav('my'); renderNav('team');
@@ -810,9 +896,10 @@ async function loadTeam() {
 
 function onChange(mk, ts) {
   S.lastUpdate[mk] = ts; S.teamCache = {};
-  showBanner(); sendNotif('Planning mis à jour 🌿', 'Votre planning ' + mkLbl(mk) + ' a changé.');
+  showBanner();
   showToast('🔔 Planning modifié !');
   document.getElementById('notifDot').style.display = 'block';
+  setTimeout(fetchAndShowChanges, 500);
 }
 
 // ═══════════════════════════════════════════════
@@ -920,6 +1007,7 @@ function renderAdmin() {
       <div class="emp-item-dot" style="background:${emp.color}" onclick="openEmpModal(${i})">${ini(emp.name)}</div>
       <span class="emp-item-name">${emp.name}${emp.pin ? ' 🔒' : ''}</span>
       <div class="emp-item-actions">
+        <button class="hist-btn" onclick="openHist('${emp.name}')" title="Historique">📋</button>
         <button class="emp-action-btn btn-edit" onclick="openEmpModal(${i})">✏️</button>
         <button class="emp-action-btn btn-del"  onclick="deleteEmp(${i})">🗑</button>
       </div>
@@ -1056,6 +1144,137 @@ async function pushEmployees(list) {
   } catch (err) { showToast('❌ ' + err.message); }
 }
 
+
+
+
+// ═══════════════════════════════════════════════
+// HISTORIQUE
+// ═══════════════════════════════════════════════
+async function openHist(empName) {
+  document.getElementById('histEmpName').textContent = empName;
+  document.getElementById('histScroll').innerHTML =
+    '<div class="center-state"><div class="spinner"></div></div>';
+  document.getElementById('histOverlay').classList.add('open');
+  document.getElementById('histOverlay').dataset.emp = empName;
+
+  try {
+    const data = await fetchJSON(API + '?action=getHistory&employee=' + enc(empName));
+    renderHist(data.history || []);
+  } catch (err) {
+    document.getElementById('histScroll').innerHTML =
+      '<div class="hist-empty">Erreur de chargement</div>';
+  }
+}
+
+function renderHist(history) {
+  if (!history.length) {
+    document.getElementById('histScroll').innerHTML =
+      '<div class="hist-empty">Aucun changement enregistré</div>';
+    return;
+  }
+
+  document.getElementById('histScroll').innerHTML = history.map(entry => {
+    const d  = new Date(entry.timestamp);
+    const dt = d.toLocaleDateString('fr-FR') + ' à ' +
+               d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+    const rows = (entry.changes || []).map(c => `
+      <div class="hist-change-row">
+        <span class="hist-day">${c.label}</span>
+        <span class="hist-from">${c.old}</span>
+        <span class="hist-arr">→</span>
+        <span class="hist-to">${c['new']}</span>
+      </div>`).join('');
+    return `<div class="hist-entry">
+      <div class="hist-entry-date">🕐 ${dt}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+}
+
+async function doClearHistory() {
+  const empName = document.getElementById('histOverlay').dataset.emp;
+  if (!empName) return;
+  if (!confirm('Effacer tout l'historique de ' + empName + ' ?')) return;
+  try {
+    await fetchJSON(API + '?action=clearHistory&employee=' + enc(empName));
+    renderHist([]);
+    showToast('Historique effacé ✓');
+  } catch (err) { showToast('❌ ' + err.message); }
+}
+
+function closeHist(e) {
+  if (!e || e.target === document.getElementById('histOverlay'))
+    document.getElementById('histOverlay').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════
+// ONESIGNAL
+// ═══════════════════════════════════════════════
+function initOneSignal(employeeName) {
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    try {
+      await OneSignal.init({
+        appId:                     '100b315e-6d8b-4ffa-a011-2192d3d6e102',
+        serviceWorkerPath:         'OneSignalSDKWorker.js',
+        serviceWorkerParam:        { scope: '/' },
+        notifyButton:              { enable: false },
+        allowLocalhostAsSecureOrigin: true,
+      });
+      // Demander la permission et taguer l'employé
+      await OneSignal.Notifications.requestPermission();
+      await OneSignal.User.addTag('employee', employeeName);
+      Logger.log && Logger.log('[OneSignal] Taggé: ' + employeeName);
+    } catch (err) {
+      console.warn('[OneSignal] Init error:', err);
+    }
+  });
+}
+
+// ── Afficher les changements ──
+async function fetchAndShowChanges() {
+  if (!S.emp) return;
+  try {
+    const data = await fetchJSON(API + '?action=getChanges&employee=' + enc(S.emp.name));
+    if (data.changes && data.changes.length > 0) {
+      showChangesCard(data.changes, data.timestamp);
+    }
+  } catch (_) {}
+}
+
+function showChangesCard(changes, ts) {
+  const d  = ts ? new Date(ts) : null;
+  const dt = d ? d.toLocaleDateString('fr-FR') + ' à ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '';
+  document.getElementById('changesDate').textContent = dt ? 'Modifié le ' + dt : '';
+  document.getElementById('changesList').innerHTML = changes.map(c => `
+    <div class="change-row">
+      <span class="change-date">${c.label}</span>
+      <div class="change-vals">
+        <span class="change-old">${c.old}</span>
+        <span class="change-arrow">→</span>
+        <span class="change-new">${c['new']}</span>
+      </div>
+    </div>`).join('');
+  document.getElementById('changesOverlay').classList.add('open');
+}
+
+function dismissChanges() {
+  document.getElementById('changesOverlay').classList.remove('open');
+  if (S.emp) {
+    fetchJSON(API + '?action=clearChanges&employee=' + enc(S.emp.name)).catch(() => {});
+  }
+}
+
+function closeChanges(e) {
+  if (!e || e.target === document.getElementById('changesOverlay')) {
+    document.getElementById('changesOverlay').classList.remove('open');
+    // Effacer les changements sur le serveur pour ne plus les revoir
+    if (S.emp) {
+      fetchJSON(API + '?action=clearChanges&employee=' + enc(S.emp.name))
+        .catch(() => {}); // Silencieux si erreur réseau
+    }
+  }
+}
 
 // ═══════════════════════════════════════════════
 // PIN
