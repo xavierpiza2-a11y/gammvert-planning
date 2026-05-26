@@ -673,36 +673,56 @@ window.addEventListener('load', () => {
   loadConfig();
 });
 
-async function loadConfig() {
-  // Charger le cache local EN PREMIER (il contient les pins)
-  const cachedEmps    = lsGet('gv_emp_list') || [];
-  const cachedMonths  = lsGet('gv_months')   || ALL_MONTHS.map(m => m.key);
-  S.employees     = cachedEmps;
-  S.visibleMonths = cachedMonths;
+// Employés par défaut si aucune donnée disponible
+const DEFAULT_EMPLOYEES = [
+  { name:'Xavier',  color:'#1a6b2a' },
+  { name:'Kévin',   color:'#1d4ed8' },
+  { name:'Emilie',  color:'#9d174d' },
+  { name:'Mailis',  color:'#6d28d9' },
+  { name:'Armelle', color:'#c2410c' },
+  { name:'Oceane',  color:'#0e7490' },
+  { name:'Kenzo',   color:'#854d0e' },
+];
 
-  try {
-    const cfg = await fetchJSON(API + '?action=getConfig');
-    // Fusionner : prendre les noms/couleurs du serveur + les pins du cache local
-    const serverEmps = cfg.employees || [];
-    S.employees = serverEmps.map(se => {
-      const cached = cachedEmps.find(ce => ce.name === se.name);
-      return { ...se, pin: cached?.pin || se.pin || '' };
-    });
-    // Ajouter les employés cachés non présents sur le serveur (cas hors-ligne)
-    cachedEmps.forEach(ce => {
-      if (!S.employees.find(e => e.name === ce.name)) S.employees.push(ce);
-    });
-    S.visibleMonths = cfg.visibleMonths || cachedMonths;
-    lsSet('gv_emp_list', S.employees);
-    lsSet('gv_months',   S.visibleMonths);
-  } catch (_) {
-    // Fallback : garder le cache local (avec les pins)
+async function loadConfig() {
+  // 1. Charger le cache local EN PREMIER (contient les pins)
+  const cachedEmps   = lsGet('gv_emp_list') || [];
+  const cachedMonths = lsGet('gv_months')   || ALL_MONTHS.map(m => m.key);
+
+  // 2. Afficher immédiatement avec le cache (ou défaut) sans attendre le réseau
+  S.employees     = cachedEmps.length ? cachedEmps : DEFAULT_EMPLOYEES;
+  S.visibleMonths = cachedMonths;
+  buildLoginList();
+
+  // 3. Reconnexion auto immédiate si session sauvegardée
+  const saved = localStorage.getItem('gv_emp');
+  if (saved) {
+    const emp = S.employees.find(e => e.name === saved);
+    if (emp) loginAs(emp, false);
   }
 
-  buildLoginList();
-  const saved = localStorage.getItem('gv_emp');
-  if (saved && S.employees.find(e => e.name === saved)) {
-    loginAs(S.employees.find(e => e.name === saved), false);
+  // 4. Mettre à jour en arrière-plan depuis le serveur
+  try {
+    const cfg = await fetchJSON(API + '?action=getConfig');
+    const serverEmps = cfg.employees || [];
+    if (serverEmps.length) {
+      // Fusionner : noms/couleurs du serveur + pins du cache local
+      S.employees = serverEmps.map(se => {
+        const cached = cachedEmps.find(ce => ce.name === se.name);
+        return cached?.pin ? { ...se, pin: cached.pin } : se;
+      });
+      cachedEmps.forEach(ce => {
+        if (!S.employees.find(e => e.name === ce.name)) S.employees.push(ce);
+      });
+      lsSet('gv_emp_list', S.employees);
+      buildLoginList(); // Rafraîchir la liste
+    }
+    if (cfg.visibleMonths) {
+      S.visibleMonths = cfg.visibleMonths;
+      lsSet('gv_months', S.visibleMonths);
+    }
+  } catch (_) {
+    // Silencieux — on utilise déjà le cache
   }
 }
 
@@ -1196,7 +1216,7 @@ function renderHist(history) {
 async function doClearHistory() {
   const empName = document.getElementById('histOverlay').dataset.emp;
   if (!empName) return;
-  if (!confirm('Effacer tout l'historique de ' + empName + ' ?')) return;
+  if (!confirm('Effacer l\u0027historique de ' + empName + ' ?')) return;
   try {
     await fetchJSON(API + '?action=clearHistory&employee=' + enc(empName));
     renderHist([]);
