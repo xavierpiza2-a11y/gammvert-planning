@@ -613,6 +613,27 @@ input{font-family:inherit}
   </div>
 </div>
 
+
+<!-- ══ MODAL HISTORIQUE ══ -->
+<div class="hist-overlay" id="histOverlay" onclick="closeHist(event)">
+  <div class="hist-card" onclick="event.stopPropagation()">
+    <div class="hist-handle"></div>
+    <div class="hist-header">
+      <div>
+        <div class="hist-title">📋 Historique des changements</div>
+        <div class="hist-emp" id="histEmpName"></div>
+      </div>
+    </div>
+    <div class="hist-scroll" id="histScroll">
+      <div class="center-state"><div class="spinner"></div></div>
+    </div>
+    <div class="hist-footer">
+      <button class="hist-clear-btn" onclick="doClearHistory()">🗑 Effacer</button>
+      <button class="hist-close-btn" onclick="closeHist()">Fermer</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1171,6 +1192,8 @@ async function pushEmployees(list) {
 // HISTORIQUE
 // ═══════════════════════════════════════════════
 function openMyHist() { if (S.emp) openHist(S.emp.name); }
+
+function openHistIdx(i) { if (S.employees[i]) openHist(S.employees[i].name); }
 
 async function openHist(empName) {
   document.getElementById('histEmpName').textContent = empName;
