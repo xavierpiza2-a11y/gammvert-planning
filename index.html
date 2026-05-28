@@ -190,6 +190,33 @@ input{font-family:inherit}
 
 
 
+
+/* ══ GESTION MOIS ADMIN ══ */
+.month-item-admin{display:flex;align-items:center;gap:10px;padding:11px 16px;
+  border-bottom:1px solid var(--s100)}
+.month-item-admin:last-child{border-bottom:none}
+.month-key-badge{background:var(--g100);color:var(--g800);font-size:11px;
+  font-weight:700;padding:3px 8px;border-radius:8px;font-family:var(--mono);
+  flex-shrink:0}
+.month-item-label{flex:1;font-size:13px;font-weight:600;color:var(--s900)}
+.month-item-tab{font-size:11px;color:var(--s400);margin-top:1px}
+.btn-del-month{width:28px;height:28px;border-radius:7px;background:var(--red-bg);
+  color:var(--red);font-size:14px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0}
+.add-month-btn{display:flex;align-items:center;gap:10px;padding:13px 16px;
+  color:var(--g700);font-size:14px;font-weight:600;width:100%;
+  border-top:1px solid var(--s200)}
+.add-month-btn:active{background:var(--g50)}
+
+/* Sélecteur mois/année dans le modal */
+.month-select-row{display:flex;gap:8px}
+.month-select-row select{flex:1;padding:10px 12px;border:1.5px solid var(--s200);
+  border-radius:var(--r-sm);font-size:14px;color:var(--s900);
+  background:var(--white);outline:none}
+.month-select-row select:focus{border-color:var(--g600)}
+.tab-preview{margin-top:6px;font-size:12px;color:var(--s500);
+  background:var(--s100);padding:6px 10px;border-radius:6px;font-family:var(--mono)}
+
 /* ══ HISTORIQUE ══ */
 .hist-btn{
   width:32px;height:32px;border-radius:50%;
@@ -527,18 +554,33 @@ input{font-family:inherit}
         </button>
       </div>
 
+      <!-- Section : Gérer les mois -->
+      <div class="admin-section">
+        <div class="admin-section-hdr">
+          <div>
+            <div class="admin-section-title">📆 Gérer les mois</div>
+            <div class="admin-section-sub">Ajouter ou supprimer des mois du planning</div>
+          </div>
+        </div>
+        <div id="adminAllMonthsList"></div>
+        <button class="add-month-btn" onclick="openAddMonthModal()">
+          <span style="width:28px;height:28px;border-radius:50%;background:var(--g100);color:var(--g700);display:flex;align-items:center;justify-content:center;font-size:18px">+</span>
+          Ajouter un mois
+        </button>
+      </div>
+
       <!-- Section : Mois visibles -->
       <div class="admin-section">
         <div class="admin-section-hdr">
           <div>
-            <div class="admin-section-title">🗓️ Mois accessibles</div>
-            <div class="admin-section-sub">Activez les mois visibles par tous les employés</div>
+            <div class="admin-section-title">🗓️ Mois accessibles aux employés</div>
+            <div class="admin-section-sub">Activez les mois visibles par toute l'équipe</div>
           </div>
         </div>
         <div class="months-grid" id="adminMonthList"></div>
         <div class="save-bar">
           <button class="save-btn" id="saveMonthsBtn" onclick="saveMonths()">
-            <span>💾</span> Enregistrer les mois
+            <span>💾</span> Enregistrer
           </button>
         </div>
       </div>
@@ -614,6 +656,44 @@ input{font-family:inherit}
 </div>
 
 
+
+<!-- ══ MODAL AJOUT MOIS ══ -->
+<div class="modal-overlay" id="addMonthModal" onclick="closeAddMonthModal(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Ajouter un mois</div>
+    <div class="modal-field">
+      <div class="modal-label">Mois et année</div>
+      <div class="month-select-row">
+        <select id="addMonthSelect" onchange="updateMonthPreview()">
+          <option value="01">Janvier</option><option value="02">Février</option>
+          <option value="03">Mars</option><option value="04">Avril</option>
+          <option value="05">Mai</option><option value="06" selected>Juin</option>
+          <option value="07">Juillet</option><option value="08">Août</option>
+          <option value="09">Septembre</option><option value="10">Octobre</option>
+          <option value="11">Novembre</option><option value="12">Décembre</option>
+        </select>
+        <select id="addYearSelect" onchange="updateMonthPreview()">
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Nom exact de l'onglet dans Google Sheets</div>
+      <input class="modal-input" id="addMonthTab" type="text"
+             placeholder="Ex: JUIN 27" oninput="updateMonthPreview()">
+      <div class="tab-preview" id="tabPreview">Aperçu : —</div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-cancel" onclick="closeAddMonthModal()">Annuler</button>
+      <button class="modal-btn modal-ok" onclick="confirmAddMonth()">Ajouter</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ MODAL HISTORIQUE ══ -->
 <div class="hist-overlay" id="histOverlay" onclick="closeHist(event)">
   <div class="hist-card" onclick="event.stopPropagation()">
@@ -643,13 +723,20 @@ input{font-family:inherit}
 const API = 'https://script.google.com/macros/s/AKfycby_gnCtcZl0ELC5yMpAZ9yjdhCgK8i6_iSMxsobbdhBqG51E-baAuovyt57JQCwZ_31eA/exec';
 const ADMIN_NAME = 'Xavier';
 
-const ALL_MONTHS = [
-  {key:'2026-06',label:'Juin 2026'},{key:'2026-07',label:'Juillet 2026'},
-  {key:'2026-08',label:'Août 2026'},{key:'2026-09',label:'Septembre 2026'},
-  {key:'2026-10',label:'Octobre 2026'},{key:'2026-11',label:'Novembre 2026'},
-  {key:'2026-12',label:'Décembre 2026'},{key:'2027-01',label:'Janvier 2027'},
-  {key:'2027-02',label:'Février 2027'},{key:'2027-03',label:'Mars 2027'},
-  {key:'2027-04',label:'Avril 2027'},{key:'2027-05',label:'Mai 2027'},
+// Liste dynamique des mois (chargée depuis le serveur)
+let ALL_MONTHS = [
+  {key:'2026-06',label:'Juin 2026',  tab:'JUIN 26'},
+  {key:'2026-07',label:'Juillet 2026',tab:'JUILLET 26'},
+  {key:'2026-08',label:'Août 2026',  tab:'AOUT 26'},
+  {key:'2026-09',label:'Septembre 2026',tab:'SEPTEMBRE 26'},
+  {key:'2026-10',label:'Octobre 2026',  tab:'OCTOBRE 26'},
+  {key:'2026-11',label:'Novembre 2026', tab:'NOVEMBRE 26'},
+  {key:'2026-12',label:'Décembre 2026', tab:'DECEMBRE 26'},
+  {key:'2027-01',label:'Janvier 2027',  tab:'JANVIER 27'},
+  {key:'2027-02',label:'Février 2027',  tab:'FEVRIER 27'},
+  {key:'2027-03',label:'Mars 2027',     tab:'MARS 27'},
+  {key:'2027-04',label:'Avril 2027',    tab:'AVRIL 27'},
+  {key:'2027-05',label:'Mai 2027',      tab:'MAI 27'},
 ];
 
 const COLOR_PALETTE = [
@@ -707,6 +794,8 @@ const DEFAULT_EMPLOYEES = [
 
 async function loadConfig() {
   // 1. Charger le cache local EN PREMIER (contient les pins)
+  const cachedAllMonths = lsGet('gv_all_months');
+  if (cachedAllMonths && cachedAllMonths.length) ALL_MONTHS = cachedAllMonths;
   const cachedEmps   = lsGet('gv_emp_list') || [];
   const cachedMonths = lsGet('gv_months')   || ALL_MONTHS.map(m => m.key);
 
@@ -737,6 +826,10 @@ async function loadConfig() {
       });
       lsSet('gv_emp_list', S.employees);
       buildLoginList(); // Rafraîchir la liste
+    }
+    if (cfg.allMonths && cfg.allMonths.length) {
+      ALL_MONTHS = cfg.allMonths;
+      lsSet('gv_all_months', ALL_MONTHS);
     }
     if (cfg.visibleMonths) {
       S.visibleMonths = cfg.visibleMonths;
@@ -1042,6 +1135,7 @@ function renderTeam(results) {
 // ═══════════════════════════════════════════════
 function renderAdmin() {
   // Liste employés
+  renderAdminAllMonths();
   document.getElementById('adminEmpList').innerHTML = S.employees.map((emp, i) => `
     <div class="emp-item" data-idx="${i}">
       <span class="drag-handle" title="Glisser pour réordonner">⠿</span>
@@ -1160,33 +1254,89 @@ async function saveEmp() {
 
 async function deleteEmp(idx) {
   const emp = S.employees[idx];
-  if (!confirm('Supprimer ' + emp.name + ' ?\n\nCet employé n\'apparaîtra plus dans l\'application.')) return;
-  if (S.employees.length <= 1) { showToast('Au moins 1 employé doit rester'); return; }
-  const updated = S.employees.filter((_, i) => i !== idx);
-  await pushEmployees(updated);
+  if (!confirm('Supprimer ' + m.label + ' ? Ce mois disparaitra de la navigation. Les donnees Sheets ne sont pas touchees.')) return;
+  const updated = ALL_MONTHS.filter((_, i) => i !== idx);
+  if (!updated.length) { showToast('Au moins 1 mois doit rester'); return; }
+  await pushAllMonths(updated);
 }
 
-async function pushEmployees(list) {
+function openAddMonthModal() {
+  // Pré-remplir avec le mois suivant le dernier de la liste
+  const last = ALL_MONTHS[ALL_MONTHS.length - 1];
+  if (last) {
+    const [y, m] = last.key.split('-').map(Number);
+    const next = new Date(y, m, 1); // mois suivant
+    document.getElementById('addYearSelect').value  = next.getFullYear();
+    document.getElementById('addMonthSelect').value = String(next.getMonth() + 1).padStart(2, '0');
+  }
+  document.getElementById('addMonthTab').value = '';
+  updateMonthPreview();
+  document.getElementById('addMonthModal').classList.add('open');
+}
+
+function closeAddMonthModal(e) {
+  if (!e || e.target === document.getElementById('addMonthModal'))
+    document.getElementById('addMonthModal').classList.remove('open');
+}
+
+function updateMonthPreview() {
+  const m    = document.getElementById('addMonthSelect').value;
+  const y    = document.getElementById('addYearSelect').value;
+  const tab  = document.getElementById('addMonthTab').value.trim().toUpperCase();
+  const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin',
+                  'Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const label = MONTHS[parseInt(m) - 1] + ' ' + y;
+  // Suggérer automatiquement le nom de l'onglet si vide
+  if (!document.getElementById('addMonthTab').value.trim()) {
+    const shortMonth = ['JAN','FEV','MARS','AVR','MAI','JUIN',
+                        'JUILLET','AOUT','SEP','OCT','NOV','DEC'];
+    const suggested = shortMonth[parseInt(m) - 1] + ' ' + String(y).slice(2);
+    document.getElementById('addMonthTab').placeholder = suggested;
+  }
+  const key = y + '-' + m;
+  document.getElementById('tabPreview').textContent =
+    'Clé : ' + key + ' · Label : ' + label + (tab ? ' · Onglet : ' + tab : '');
+}
+
+async function confirmAddMonth() {
+  const m     = document.getElementById('addMonthSelect').value;
+  const y     = document.getElementById('addYearSelect').value;
+  const tab   = document.getElementById('addMonthTab').value.trim().toUpperCase();
+  const key   = y + '-' + m;
+  const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin',
+                  'Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const label = MONTHS[parseInt(m) - 1] + ' ' + y;
+
+  if (!tab) { showToast("Saisissez le nom exact de l'onglet Sheets"); return; }
+  if (ALL_MONTHS.find(mo => mo.key === key)) {
+    showToast('Ce mois est déjà dans la liste'); return;
+  }
+
+  const updated = [...ALL_MONTHS, { key, tab, label }];
+  // Trier par clé chronologique
+  updated.sort((a, b) => a.key.localeCompare(b.key));
+  await pushAllMonths(updated);
+  document.getElementById('addMonthModal').classList.remove('open');
+}
+
+async function pushAllMonths(list) {
   try {
-    const url  = API + '?action=setEmployees&admin=' + enc(ADMIN_NAME) + '&employees=' + enc(JSON.stringify(list));
+    const url  = API + '?action=setAllMonths&admin=' + enc(ADMIN_NAME) + '&months=' + enc(JSON.stringify(list));
     const data = await fetchJSON(url);
     if (data.error) throw new Error(data.error);
-    // Fusionner : conserver les pins de la liste envoyée (le serveur les retourne aussi)
-    const returned = data.employees || [];
-    S.employees = returned.map(se => {
-      const sent = list.find(e => e.name === se.name);
-      return { ...se, pin: sent?.pin || se.pin || '' };
-    });
-    lsSet('gv_emp_list', S.employees);
-    S.teamCache = {};
-    buildLoginList();
-    renderAdmin();
-    showToast('✅ Équipe mise à jour');
+    ALL_MONTHS = data.allMonths;
+    lsSet('gv_all_months', ALL_MONTHS);
+    // Nettoyer les mois visibles qui n'existent plus
+    const validKeys = ALL_MONTHS.map(m => m.key);
+    S.visibleMonths = S.visibleMonths.filter(k => validKeys.includes(k));
+    if (!S.visibleMonths.length) S.visibleMonths = validKeys;
+    lsSet('gv_months', S.visibleMonths);
+    clampDate('my'); clampDate('team');
+    renderNav('my'); renderNav('team');
+    renderAdmin(); // Rafraîchir la page admin
+    showToast('✅ Mois mis à jour');
   } catch (err) { showToast('❌ ' + err.message); }
 }
-
-
-
 
 // ═══════════════════════════════════════════════
 // HISTORIQUE
