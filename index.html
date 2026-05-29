@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#1a6b2a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>GammVert · Planning</title>
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -45,85 +44,6 @@ input{font-family:inherit}
 .emp-grid{display:flex;flex-direction:column;gap:7px}
 .emp-btn{display:flex;align-items:center;gap:11px;padding:12px 13px;border:1.5px solid var(--s200);border-radius:var(--r);background:var(--white);transition:border-color .15s,background .15s,transform .1s;text-align:left;width:100%}
 .emp-btn:active{transform:scale(.98)}
-
-
-/* ══ CARTE CHANGEMENTS ══ */
-.changes-overlay{position:fixed;inset:0;z-index:150;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.3)}
-.changes-overlay.open{display:flex;animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.changes-card{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;
-  padding:0 0 32px;animation:sheetUp .3s cubic-bezier(.34,1.2,.64,1);max-height:75dvh;overflow-y:auto}
-.changes-handle{width:40px;height:4px;background:var(--s300);border-radius:2px;margin:12px auto}
-.changes-header{padding:4px 20px 12px;border-bottom:1px solid var(--s200)}
-.changes-title{font-size:16px;font-weight:700;color:var(--s900);display:flex;align-items:center;gap:8px}
-.changes-sub{font-size:12px;color:var(--s400);margin-top:3px}
-.changes-list{padding:8px 16px}
-.change-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--s100)}
-.change-row:last-child{border-bottom:none}
-.change-date{font-size:12px;font-weight:600;color:var(--s700);min-width:88px;flex-shrink:0}
-.change-vals{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap}
-.change-old{font-size:11px;font-weight:600;background:var(--red-bg);color:var(--red);
-  padding:3px 8px;border-radius:8px;text-decoration:line-through;opacity:.8}
-.change-arrow{font-size:14px;color:var(--s400)}
-.change-new{font-size:11px;font-weight:700;background:var(--g100);color:var(--g700);padding:3px 8px;border-radius:8px}
-.changes-close{display:block;margin:12px 16px 0;padding:12px;border-radius:24px;
-  background:var(--g600);color:var(--white);font-size:14px;font-weight:700;text-align:center;width:calc(100% - 32px)}
-
-/* ══ PIN SCREEN ══ */
-#pinScreen{background:var(--g900);overflow:hidden;position:relative}
-#pinScreen::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(46,163,73,.25) 0%,transparent 70%);border-radius:50%}
-.pin-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:52px 20px 40px;flex:1}
-.pin-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--white);margin-bottom:14px;border:3px solid rgba(255,255,255,.3);animation:logoIn .4s ease-out}
-.pin-name{font-size:20px;font-weight:700;color:var(--white);margin-bottom:6px}
-.pin-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:32px}
-.pin-card{width:100%;max-width:360px;background:var(--white);border-radius:18px;padding:24px 22px;box-shadow:var(--shadow-lg)}
-.pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:24px}
-.pin-dot{width:14px;height:14px;border-radius:50%;background:var(--s200);transition:background .15s,transform .15s}
-.pin-dot.filled{background:var(--g600);transform:scale(1.1)}
-.pin-dot.error{background:var(--red)}
-.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.pin-key{height:56px;border-radius:12px;background:var(--s100);font-size:20px;font-weight:600;color:var(--s900);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .1s,transform .1s;user-select:none;-webkit-user-select:none}
-.pin-key:active{background:var(--g100);transform:scale(.94)}
-.pin-key.del{font-size:16px}
-.pin-key.empty{background:transparent;pointer-events:none}
-.pin-back{margin-top:16px;text-align:center}
-.pin-back-btn{font-size:13px;color:rgba(255,255,255,.5);padding:8px 16px}
-
-/* ══ ORDRE EMPLOYÉS (drag) ══ */
-.emp-item{cursor:default}
-.emp-item.dragging{opacity:.4}
-.drag-handle{font-size:22px;color:var(--s400);cursor:grab;padding:0 6px;touch-action:none;user-select:none;-webkit-user-select:none;letter-spacing:-2px}
-.drag-handle:active{cursor:grabbing}
-.emp-item.drag-over{border-top:2px solid var(--g600)}
-
-
-/* ══ PIN INPUT MODAL (4 cases) ══ */
-.pin-boxes{display:flex;gap:10px;justify-content:center;margin:8px 0 4px}
-.pin-box{width:48px;height:56px;border-radius:12px;border:2px solid var(--s200);
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;font-weight:700;color:var(--s900);
-  background:var(--s100);transition:border-color .15s,background .15s}
-.pin-box.active{border-color:var(--g600);background:var(--white);box-shadow:0 0 0 3px var(--g100)}
-.pin-box.filled::after{content:'●';font-size:18px;color:var(--g700)}
-.pin-box.has-val::after{content:'●';font-size:18px;color:var(--g700)}
-.modal-pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
-.modal-pin-key{height:50px;border-radius:10px;background:var(--s100);font-size:18px;
-  font-weight:600;color:var(--s900);display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:background .1s,transform .1s;user-select:none;-webkit-user-select:none}
-.modal-pin-key:active{background:var(--g100);transform:scale(.94)}
-.modal-pin-key.del-key{font-size:15px}
-.modal-pin-key.empty-key{background:transparent;pointer-events:none}
-.pin-clear-link{text-align:center;margin-top:6px}
-.pin-clear-link button{font-size:12px;color:var(--red);font-weight:600;padding:4px 10px;
-  border-radius:8px;background:var(--red-bg)}
-
-/* ══ CHAMP MOT DE PASSE DANS MODAL EMPLOYÉ ══ */
-.pin-modal-row{display:flex;gap:8px;align-items:center}
-.pin-preview{display:flex;gap:6px}
-.pin-preview-dot{width:10px;height:10px;border-radius:50%;background:var(--s200)}
-.pin-preview-dot.set{background:var(--g600)}
-.pin-clear-btn{font-size:12px;color:var(--red);font-weight:600;padding:4px 8px;border-radius:6px;background:var(--red-bg)}
-
 .emp-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--white);flex-shrink:0}
 .emp-name{font-size:14px;font-weight:600;color:var(--s900)}
 .emp-arrow{margin-left:auto;color:var(--s400);font-size:17px}
@@ -188,94 +108,6 @@ input{font-family:inherit}
 .shift-hours{font-size:11px;color:var(--s500);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
 .today-tag{margin-left:auto;background:var(--g100);color:var(--g700);font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;flex-shrink:0;text-transform:uppercase}
 
-
-
-
-/* ══ GESTION MOIS ADMIN ══ */
-.month-item-admin{display:flex;align-items:center;gap:10px;padding:11px 16px;
-  border-bottom:1px solid var(--s100)}
-.month-item-admin:last-child{border-bottom:none}
-.month-key-badge{background:var(--g100);color:var(--g800);font-size:11px;
-  font-weight:700;padding:3px 8px;border-radius:8px;font-family:var(--mono);
-  flex-shrink:0}
-.month-item-label{flex:1;font-size:13px;font-weight:600;color:var(--s900)}
-.month-item-tab{font-size:11px;color:var(--s400);margin-top:1px}
-.btn-del-month{width:28px;height:28px;border-radius:7px;background:var(--red-bg);
-  color:var(--red);font-size:14px;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0}
-.add-month-btn{display:flex;align-items:center;gap:10px;padding:13px 16px;
-  color:var(--g700);font-size:14px;font-weight:600;width:100%;
-  border-top:1px solid var(--s200)}
-.add-month-btn:active{background:var(--g50)}
-
-/* Sélecteur mois/année dans le modal */
-.month-select-row{display:flex;gap:8px}
-.month-select-row select{flex:1;padding:10px 12px;border:1.5px solid var(--s200);
-  border-radius:var(--r-sm);font-size:14px;color:var(--s900);
-  background:var(--white);outline:none}
-.month-select-row select:focus{border-color:var(--g600)}
-.tab-preview{margin-top:6px;font-size:12px;color:var(--s500);
-  background:var(--s100);padding:6px 10px;border-radius:6px;font-family:var(--mono)}
-
-/* ══ HISTORIQUE ══ */
-.hist-btn{
-  width:32px;height:32px;border-radius:50%;
-  background:#eff6ff;color:#2563eb;
-  font-size:16px;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:background .15s;
-}
-.hist-btn:active{background:#dbeafe}
-
-.hist-overlay{position:fixed;inset:0;z-index:150;display:none;
-  align-items:flex-end;justify-content:center;background:rgba(0,0,0,.3)}
-.hist-overlay.open{display:flex;animation:fadeIn .2s ease}
-.hist-card{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;
-  padding-bottom:32px;animation:sheetUp .3s cubic-bezier(.34,1.2,.64,1);
-  max-height:80dvh;display:flex;flex-direction:column}
-.hist-handle{width:40px;height:4px;background:var(--s300);border-radius:2px;margin:12px auto;flex-shrink:0}
-.hist-header{padding:4px 20px 12px;border-bottom:1px solid var(--s200);
-  display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.hist-title{font-size:16px;font-weight:700;color:var(--s900);display:flex;align-items:center;gap:8px}
-.hist-emp{font-size:12px;color:var(--s400);margin-top:2px}
-.hist-scroll{flex:1;overflow-y:auto;padding:8px 16px}
-.hist-empty{text-align:center;color:var(--s400);font-size:13px;padding:32px 0}
-.hist-entry{border-bottom:1px solid var(--s100);padding:12px 0}
-.hist-entry:last-child{border-bottom:none}
-.hist-entry-date{font-size:11px;font-weight:700;color:var(--s400);
-  text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;
-  display:flex;align-items:center;gap:6px}
-.hist-entry-date::after{content:'';flex:1;height:1px;background:var(--s200)}
-.hist-change-row{display:flex;align-items:center;gap:8px;padding:4px 0}
-.hist-day{font-size:12px;font-weight:600;color:var(--s700);min-width:88px;flex-shrink:0}
-.hist-from{font-size:11px;font-weight:600;background:var(--red-bg);color:var(--red);
-  padding:2px 7px;border-radius:7px;text-decoration:line-through;opacity:.8}
-.hist-arr{font-size:12px;color:var(--s400)}
-.hist-to{font-size:11px;font-weight:700;background:var(--g100);color:var(--g700);
-  padding:2px 7px;border-radius:7px}
-.hist-footer{padding:12px 16px 0;border-top:1px solid var(--s200);
-  display:flex;gap:10px;flex-shrink:0}
-.hist-clear-btn{flex:1;padding:11px;border-radius:22px;
-  background:var(--red-bg);color:var(--red);font-size:13px;font-weight:700;text-align:center}
-.hist-close-btn{flex:1;padding:11px;border-radius:22px;
-  background:var(--g600);color:var(--white);font-size:13px;font-weight:700;text-align:center}
-
-/* ══ COLONNE INFORMATION ══ */
-.info-badge{
-  display:inline-flex;align-items:center;gap:5px;
-  background:#fef9c3;color:#713f12;
-  border:1px solid #fde68a;
-  border-radius:8px;padding:3px 9px;
-  font-size:11px;font-weight:600;
-  margin-top:4px;
-  width:fit-content;max-width:100%;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.info-badge-icon{font-size:12px;flex-shrink:0}
-.day-main-wrap{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px}
-.day-main-top{display:flex;align-items:center;gap:8px;min-width:0}
-.team-info{font-size:9px;color:#713f12;background:#fef9c3;border-radius:4px;
-  padding:1px 4px;margin-top:1px;display:block;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:82px}
 /* ══ SHIFT COLORS ══ */
 .s-BLEU  {background:#bfdbfe;color:#1e3a8a}
 .s-GRIS  {background:#374151;color:#fff}
@@ -388,24 +220,8 @@ input{font-family:inherit}
 .ib-no{color:var(--s500)}
 
 /* ══ TOAST ══ */
-.toast{
-  position:fixed;bottom:80px;left:50%;
-  transform:translateX(-50%);
-  background:var(--s900);color:var(--white);
-  padding:11px 18px;border-radius:22px;
-  font-size:13px;font-weight:500;
-  box-shadow:var(--shadow-lg);z-index:200;
-  max-width:290px;text-align:center;white-space:nowrap;
-  pointer-events:none;
-  opacity:0;visibility:hidden;
-  transition:opacity .25s ease, visibility .25s ease;
-}
-.toast.show{
-  opacity:1;visibility:visible;
-  animation:toastIn .25s ease-out, toastOut .3s ease-in 2.7s forwards;
-}
-@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-@keyframes toastOut{from{opacity:1}to{opacity:0;visibility:hidden}}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--s900);color:var(--white);padding:11px 18px;border-radius:22px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);z-index:200;max-width:290px;text-align:center;white-space:nowrap;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -422,53 +238,6 @@ input{font-family:inherit}
         <div class="center-state" style="padding:20px"><div class="spinner"></div></div>
       </div>
     </div>
-  </div>
-</div>
-
-
-
-<!-- ══ CARTE CHANGEMENTS ══ -->
-<div class="changes-overlay" id="changesOverlay" onclick="closeChanges(event)">
-  <div class="changes-card" onclick="event.stopPropagation()">
-    <div class="changes-handle"></div>
-    <div class="changes-header">
-      <div class="changes-title">📋 Votre planning a changé</div>
-      <div class="changes-sub" id="changesDate"></div>
-    </div>
-    <div class="changes-list" id="changesList"></div>
-    <button class="changes-close" onclick="dismissChanges()">J'ai compris ✓</button>
-  </div>
-</div>
-
-<!-- ══ PIN SCREEN ══ -->
-<div id="pinScreen" class="screen">
-  <div class="pin-inner">
-    <div class="pin-avatar" id="pinAvatar"></div>
-    <div class="pin-name" id="pinEmpName"></div>
-    <div class="pin-sub">Entrez votre code PIN</div>
-    <div class="pin-card">
-      <div class="pin-dots" id="pinDots">
-        <div class="pin-dot" id="pd0"></div>
-        <div class="pin-dot" id="pd1"></div>
-        <div class="pin-dot" id="pd2"></div>
-        <div class="pin-dot" id="pd3"></div>
-      </div>
-      <div class="pin-grid">
-        <button class="pin-key" onclick="pinKey('1')">1</button>
-        <button class="pin-key" onclick="pinKey('2')">2</button>
-        <button class="pin-key" onclick="pinKey('3')">3</button>
-        <button class="pin-key" onclick="pinKey('4')">4</button>
-        <button class="pin-key" onclick="pinKey('5')">5</button>
-        <button class="pin-key" onclick="pinKey('6')">6</button>
-        <button class="pin-key" onclick="pinKey('7')">7</button>
-        <button class="pin-key" onclick="pinKey('8')">8</button>
-        <button class="pin-key" onclick="pinKey('9')">9</button>
-        <button class="pin-key empty"></button>
-        <button class="pin-key" onclick="pinKey('0')">0</button>
-        <button class="pin-key del" onclick="pinDel()">⌫</button>
-      </div>
-    </div>
-    <div class="pin-back"><button class="pin-back-btn" onclick="pinBack()">← Changer de profil</button></div>
   </div>
 </div>
 
@@ -554,33 +323,18 @@ input{font-family:inherit}
         </button>
       </div>
 
-      <!-- Section : Gérer les mois -->
-      <div class="admin-section">
-        <div class="admin-section-hdr">
-          <div>
-            <div class="admin-section-title">📆 Gérer les mois</div>
-            <div class="admin-section-sub">Ajouter ou supprimer des mois du planning</div>
-          </div>
-        </div>
-        <div id="adminAllMonthsList"></div>
-        <button class="add-month-btn" onclick="openAddMonthModal()">
-          <span style="width:28px;height:28px;border-radius:50%;background:var(--g100);color:var(--g700);display:flex;align-items:center;justify-content:center;font-size:18px">+</span>
-          Ajouter un mois
-        </button>
-      </div>
-
       <!-- Section : Mois visibles -->
       <div class="admin-section">
         <div class="admin-section-hdr">
           <div>
-            <div class="admin-section-title">🗓️ Mois accessibles aux employés</div>
-            <div class="admin-section-sub">Activez les mois visibles par toute l'équipe</div>
+            <div class="admin-section-title">🗓️ Mois accessibles</div>
+            <div class="admin-section-sub">Activez les mois visibles par tous les employés</div>
           </div>
         </div>
         <div class="months-grid" id="adminMonthList"></div>
         <div class="save-bar">
           <button class="save-btn" id="saveMonthsBtn" onclick="saveMonths()">
-            <span>💾</span> Enregistrer
+            <span>💾</span> Enregistrer les mois
           </button>
         </div>
       </div>
@@ -595,9 +349,6 @@ input{font-family:inherit}
     </button>
     <button class="bnav-btn" id="bnavTeam" onclick="switchTab('team')">
       <span class="bnav-icon">👥</span><span>Équipe</span>
-    </button>
-    <button class="bnav-btn" id="bnavHist" onclick="openMyHist()">
-      <span class="bnav-icon">📋</span><span>Historique</span>
     </button>
     <button class="bnav-btn" id="bnavAdmin" style="display:none" onclick="switchTab('admin')">
       <span class="bnav-icon">⚙️</span><span>Admin</span>
@@ -616,100 +367,12 @@ input{font-family:inherit}
       <input class="modal-input" id="empNameInput" type="text" placeholder="Ex: Marie Martin" autocomplete="off">
     </div>
     <div class="modal-field">
-      <div class="modal-label">Code PIN (4 chiffres)</div>
-      <div id="pinActiveBadgeWrap"></div>
-      <div class="pin-boxes">
-        <div class="pin-box" id="mpb0"></div>
-        <div class="pin-box" id="mpb1"></div>
-        <div class="pin-box" id="mpb2"></div>
-        <div class="pin-box" id="mpb3"></div>
-      </div>
-      <div class="modal-pin-grid">
-        <button class="modal-pin-key" onclick="modalPinKey('1')">1</button>
-        <button class="modal-pin-key" onclick="modalPinKey('2')">2</button>
-        <button class="modal-pin-key" onclick="modalPinKey('3')">3</button>
-        <button class="modal-pin-key" onclick="modalPinKey('4')">4</button>
-        <button class="modal-pin-key" onclick="modalPinKey('5')">5</button>
-        <button class="modal-pin-key" onclick="modalPinKey('6')">6</button>
-        <button class="modal-pin-key" onclick="modalPinKey('7')">7</button>
-        <button class="modal-pin-key" onclick="modalPinKey('8')">8</button>
-        <button class="modal-pin-key" onclick="modalPinKey('9')">9</button>
-        <button class="modal-pin-key empty-key"></button>
-        <button class="modal-pin-key" onclick="modalPinKey('0')">0</button>
-        <button class="modal-pin-key del-key" onclick="modalPinDel()">⌫</button>
-      </div>
-      <div class="pin-clear-link">
-        <button onclick="modalPinClear()">✕ Supprimer le PIN</button>
-      </div>
-    </div>
-
-    <div class="modal-field">
       <div class="modal-label">Couleur</div>
     </div>
-
     <div class="color-grid" id="colorGrid"></div>
     <div class="modal-actions">
       <button class="modal-btn modal-cancel" onclick="closeEmpModal()">Annuler</button>
       <button class="modal-btn modal-ok" onclick="saveEmp()">Enregistrer</button>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- ══ MODAL AJOUT MOIS ══ -->
-<div class="modal-overlay" id="addMonthModal" onclick="closeAddMonthModal(event)">
-  <div class="modal-sheet" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Ajouter un mois</div>
-    <div class="modal-field">
-      <div class="modal-label">Mois et année</div>
-      <div class="month-select-row">
-        <select id="addMonthSelect" onchange="updateMonthPreview()">
-          <option value="01">Janvier</option><option value="02">Février</option>
-          <option value="03">Mars</option><option value="04">Avril</option>
-          <option value="05">Mai</option><option value="06" selected>Juin</option>
-          <option value="07">Juillet</option><option value="08">Août</option>
-          <option value="09">Septembre</option><option value="10">Octobre</option>
-          <option value="11">Novembre</option><option value="12">Décembre</option>
-        </select>
-        <select id="addYearSelect" onchange="updateMonthPreview()">
-          <option value="2026">2026</option>
-          <option value="2027">2027</option>
-          <option value="2028">2028</option>
-          <option value="2029">2029</option>
-        </select>
-      </div>
-    </div>
-    <div class="modal-field">
-      <div class="modal-label">Nom exact de l'onglet dans Google Sheets</div>
-      <input class="modal-input" id="addMonthTab" type="text"
-             placeholder="Ex: JUIN 27" oninput="updateMonthPreview()">
-      <div class="tab-preview" id="tabPreview">Aperçu : —</div>
-    </div>
-    <div class="modal-actions">
-      <button class="modal-btn modal-cancel" onclick="closeAddMonthModal()">Annuler</button>
-      <button class="modal-btn modal-ok" onclick="confirmAddMonth()">Ajouter</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL HISTORIQUE ══ -->
-<div class="hist-overlay" id="histOverlay" onclick="closeHist(event)">
-  <div class="hist-card" onclick="event.stopPropagation()">
-    <div class="hist-handle"></div>
-    <div class="hist-header">
-      <div>
-        <div class="hist-title">📋 Historique des changements</div>
-        <div class="hist-emp" id="histEmpName"></div>
-      </div>
-    </div>
-    <div class="hist-scroll" id="histScroll">
-      <div class="center-state"><div class="spinner"></div></div>
-    </div>
-    <div class="hist-footer">
-      <button class="hist-clear-btn" onclick="doClearHistory()">🗑 Effacer</button>
-      <button class="hist-close-btn" onclick="closeHist()">Fermer</button>
     </div>
   </div>
 </div>
@@ -723,20 +386,13 @@ input{font-family:inherit}
 const API = 'https://script.google.com/macros/s/AKfycby_gnCtcZl0ELC5yMpAZ9yjdhCgK8i6_iSMxsobbdhBqG51E-baAuovyt57JQCwZ_31eA/exec';
 const ADMIN_NAME = 'Xavier';
 
-// Liste dynamique des mois (chargée depuis le serveur)
-let ALL_MONTHS = [
-  {key:'2026-06',label:'Juin 2026',  tab:'JUIN 26'},
-  {key:'2026-07',label:'Juillet 2026',tab:'JUILLET 26'},
-  {key:'2026-08',label:'Août 2026',  tab:'AOUT 26'},
-  {key:'2026-09',label:'Septembre 2026',tab:'SEPTEMBRE 26'},
-  {key:'2026-10',label:'Octobre 2026',  tab:'OCTOBRE 26'},
-  {key:'2026-11',label:'Novembre 2026', tab:'NOVEMBRE 26'},
-  {key:'2026-12',label:'Décembre 2026', tab:'DECEMBRE 26'},
-  {key:'2027-01',label:'Janvier 2027',  tab:'JANVIER 27'},
-  {key:'2027-02',label:'Février 2027',  tab:'FEVRIER 27'},
-  {key:'2027-03',label:'Mars 2027',     tab:'MARS 27'},
-  {key:'2027-04',label:'Avril 2027',    tab:'AVRIL 27'},
-  {key:'2027-05',label:'Mai 2027',      tab:'MAI 27'},
+const ALL_MONTHS = [
+  {key:'2026-06',label:'Juin 2026'},{key:'2026-07',label:'Juillet 2026'},
+  {key:'2026-08',label:'Août 2026'},{key:'2026-09',label:'Septembre 2026'},
+  {key:'2026-10',label:'Octobre 2026'},{key:'2026-11',label:'Novembre 2026'},
+  {key:'2026-12',label:'Décembre 2026'},{key:'2027-01',label:'Janvier 2027'},
+  {key:'2027-02',label:'Février 2027'},{key:'2027-03',label:'Mars 2027'},
+  {key:'2027-04',label:'Avril 2027'},{key:'2027-05',label:'Mai 2027'},
 ];
 
 const COLOR_PALETTE = [
@@ -765,10 +421,8 @@ const S = {
   dateMy: new Date(), dateTeam: new Date(),
   cache: {}, lastUpdate: {}, teamCache: {},
   pollTimer: null, deferredInstall: null,
-  pendingEmp: null, pinBuffer: '', pinVerified: false,
   // Admin modal
-  editIdx: -1, editColor: '#1a6b2a', editHasPin: false,
-  modalPin: '', modalPinKeep: false,
+  editIdx: -1, editColor: '#1a6b2a',
   // Admin months (draft)
   draftMonths: [],
 };
@@ -781,62 +435,22 @@ window.addEventListener('load', () => {
   loadConfig();
 });
 
-// Employés par défaut si aucune donnée disponible
-const DEFAULT_EMPLOYEES = [
-  { name:'Xavier',  color:'#1a6b2a' },
-  { name:'Kévin',   color:'#1d4ed8' },
-  { name:'Emilie',  color:'#9d174d' },
-  { name:'Mailis',  color:'#6d28d9' },
-  { name:'Armelle', color:'#c2410c' },
-  { name:'Oceane',  color:'#0e7490' },
-  { name:'Kenzo',   color:'#854d0e' },
-];
-
 async function loadConfig() {
-  // 1. Charger le cache local EN PREMIER (contient les pins)
-  const cachedAllMonths = lsGet('gv_all_months');
-  if (cachedAllMonths && cachedAllMonths.length) ALL_MONTHS = cachedAllMonths;
-  const cachedEmps   = lsGet('gv_emp_list') || [];
-  const cachedMonths = lsGet('gv_months')   || ALL_MONTHS.map(m => m.key);
-
-  // 2. Afficher immédiatement avec le cache (ou défaut) sans attendre le réseau
-  S.employees     = cachedEmps.length ? cachedEmps : DEFAULT_EMPLOYEES;
-  S.visibleMonths = cachedMonths;
-  buildLoginList();
-
-  // 3. Reconnexion auto immédiate si session sauvegardée
-  const saved = localStorage.getItem('gv_emp');
-  if (saved) {
-    const emp = S.employees.find(e => e.name === saved);
-    if (emp) loginAs(emp, false);
-  }
-
-  // 4. Mettre à jour en arrière-plan depuis le serveur
   try {
     const cfg = await fetchJSON(API + '?action=getConfig');
-    const serverEmps = cfg.employees || [];
-    if (serverEmps.length) {
-      // Fusionner : noms/couleurs du serveur + pins du cache local
-      S.employees = serverEmps.map(se => {
-        const cached = cachedEmps.find(ce => ce.name === se.name);
-        return cached?.pin ? { ...se, pin: cached.pin } : se;
-      });
-      cachedEmps.forEach(ce => {
-        if (!S.employees.find(e => e.name === ce.name)) S.employees.push(ce);
-      });
-      lsSet('gv_emp_list', S.employees);
-      buildLoginList(); // Rafraîchir la liste
-    }
-    if (cfg.allMonths && cfg.allMonths.length) {
-      ALL_MONTHS = cfg.allMonths;
-      lsSet('gv_all_months', ALL_MONTHS);
-    }
-    if (cfg.visibleMonths) {
-      S.visibleMonths = cfg.visibleMonths;
-      lsSet('gv_months', S.visibleMonths);
-    }
+    S.employees     = cfg.employees     || [];
+    S.visibleMonths = cfg.visibleMonths || ALL_MONTHS.map(m => m.key);
+    lsSet('gv_emp_list', S.employees);
+    lsSet('gv_months',   S.visibleMonths);
   } catch (_) {
-    // Silencieux — on utilise déjà le cache
+    // Fallback cache local
+    S.employees     = lsGet('gv_emp_list') || [];
+    S.visibleMonths = lsGet('gv_months')   || ALL_MONTHS.map(m => m.key);
+  }
+  buildLoginList();
+  const saved = localStorage.getItem('gv_emp');
+  if (saved && S.employees.find(e => e.name === saved)) {
+    loginAs(S.employees.find(e => e.name === saved), false);
   }
 }
 
@@ -849,28 +463,15 @@ function buildLoginList() {
       '<div style="text-align:center;color:#94a3b8;padding:12px;font-size:13px">Aucun employé configuré</div>';
     return;
   }
-  document.getElementById('empGrid').innerHTML = S.employees.map((emp, i) => `
-    <button class="emp-btn" onclick="loginAsIdx(${i})">
+  document.getElementById('empGrid').innerHTML = S.employees.map(emp => `
+    <button class="emp-btn" onclick='loginAs(${JSON.stringify(emp)})'>
       <div class="emp-avatar" style="background:${emp.color}">${ini(emp.name)}</div>
       <span class="emp-name">${emp.name}</span>
       <span class="emp-arrow">›</span>
     </button>`).join('');
 }
 
-// Wrapper qui récupère l'employé depuis S.employees par index (évite les problèmes de sérialisation JSON en HTML)
-function loginAsIdx(i) {
-  loginAs(S.employees[i]);
-}
-
 function loginAs(emp, animate = true) {
-  // Si l'employé a un PIN et que le PIN n'a pas encore été vérifié, afficher l'écran PIN
-  if (emp.pin && !S.pinVerified) {
-    S.pendingEmp = emp;
-    S.pinVerified = false;
-    showPinScreen(emp);
-    return;
-  }
-  S.pinVerified = false; // réinitialiser pour la prochaine fois
   S.emp = emp;
   S.isAdmin = emp.name === ADMIN_NAME;
   localStorage.setItem('gv_emp', emp.name);
@@ -885,8 +486,6 @@ function loginAs(emp, animate = true) {
 
   showScreen('appScreen');
   if (animate) showToast('Bonjour ' + emp.name.split(' ')[0] + ' 👋');
-  initOneSignal(emp.name);
-  setTimeout(fetchAndShowChanges, 2000); // Laisser le planning charger
 
   clampDate('my'); clampDate('team');
   renderNav('my'); renderNav('team');
@@ -897,7 +496,7 @@ function openSettings() {
   if (confirm('Connecté : ' + S.emp.name + '\n\nOK pour changer de profil ?')) logout();
 }
 function logout() {
-  stopPoll(); S.emp = null; S.pinVerified = false;
+  stopPoll(); S.emp = null;
   localStorage.removeItem('gv_emp');
   document.getElementById('bottomNav').style.display = 'none';
   showScreen('loginScreen');
@@ -989,23 +588,9 @@ async function poll() {
 }
 
 function syncConfig(data) {
-  // Mettre à jour les mois visibles
-  if (data.visibleMonths) {
-    S.visibleMonths = data.visibleMonths;
-    lsSet('gv_months', S.visibleMonths);
-    renderNav('my'); renderNav('team');
-  }
-  // Mettre à jour les employés SEULEMENT si la liste serveur contient des pins
-  // ou si on n'a pas encore de liste locale (évite d'écraser les pins en mémoire)
-  if (data.employees && data.employees.length) {
-    const serverHasPins = data.employees.some(e => e.pin);
-    const localHasPins  = S.employees.some(e => e.pin);
-    if (serverHasPins || !localHasPins) {
-      S.employees = data.employees;
-      lsSet('gv_emp_list', S.employees);
-      buildLoginList();
-    }
-  }
+  // Mettre à jour la config si le serveur en envoie
+  if (data.visibleMonths) { S.visibleMonths = data.visibleMonths; lsSet('gv_months', S.visibleMonths); renderNav('my'); renderNav('team'); }
+  if (data.employees && data.employees.length) { S.employees = data.employees; lsSet('gv_emp_list', S.employees); }
 }
 
 async function loadTeam() {
@@ -1030,10 +615,9 @@ async function loadTeam() {
 
 function onChange(mk, ts) {
   S.lastUpdate[mk] = ts; S.teamCache = {};
-  showBanner();
+  showBanner(); sendNotif('Planning mis à jour 🌿', 'Votre planning ' + mkLbl(mk) + ' a changé.');
   showToast('🔔 Planning modifié !');
   document.getElementById('notifDot').style.display = 'block';
-  setTimeout(fetchAndShowChanges, 500);
 }
 
 // ═══════════════════════════════════════════════
@@ -1064,14 +648,9 @@ function renderMy(data) {
         <div class="d-num">${day}</div>
       </div>
       <div class="day-main">
-        <div class="day-main-wrap">
-          <div class="day-main-top">
-            <span class="shift-pill ${cls}">${lbl||'—'}</span>
-            ${shift==='HORAIRE'?'':(hours?`<span class="shift-hours">${hours}</span>`:'')}
-            ${isToday?'<span class="today-tag">Auj.</span>':''}
-          </div>
-          ${dd.info ? `<div class="info-badge"><span class="info-badge-icon">ℹ️</span>${dd.info}</div>` : ''}
-        </div>
+        <span class="shift-pill ${cls}">${lbl||'—'}</span>
+        ${shift==='HORAIRE'?'':(hours?`<span class="shift-hours">${hours}</span>`:'')}
+        ${isToday?'<span class="today-tag">Auj.</span>':''}
       </div>
     </div>`;
   }
@@ -1120,7 +699,6 @@ function renderTeam(results) {
         return `<td class="team-cell">
           ${lbl?`<span class="team-pill ${cls}">${lbl}</span>`:'<span style="color:#cbd5e1">—</span>'}
           ${sh!=='HORAIRE'&&hr?`<span class="team-hours">${hr}</span>`:''}
-          ${dd.info?`<span class="team-info">ℹ️ ${dd.info}</span>`:''}
         </td>`;
       }).join('')}
     </tr>`;
@@ -1135,19 +713,15 @@ function renderTeam(results) {
 // ═══════════════════════════════════════════════
 function renderAdmin() {
   // Liste employés
-  renderAdminAllMonths();
   document.getElementById('adminEmpList').innerHTML = S.employees.map((emp, i) => `
-    <div class="emp-item" data-idx="${i}">
-      <span class="drag-handle" title="Glisser pour réordonner">⠿</span>
+    <div class="emp-item">
       <div class="emp-item-dot" style="background:${emp.color}" onclick="openEmpModal(${i})">${ini(emp.name)}</div>
-      <span class="emp-item-name">${emp.name}${emp.pin ? ' 🔒' : ''}</span>
+      <span class="emp-item-name">${emp.name}</span>
       <div class="emp-item-actions">
-        <button class="hist-btn" onclick="openHistIdx(${i})" title="Historique">📋</button>
         <button class="emp-action-btn btn-edit" onclick="openEmpModal(${i})">✏️</button>
         <button class="emp-action-btn btn-del"  onclick="deleteEmp(${i})">🗑</button>
       </div>
     </div>`).join('');
-  setTimeout(initDragDrop, 50);
 
   // Liste mois
   S.draftMonths = [...S.visibleMonths];
@@ -1190,29 +764,10 @@ function openEmpModal(idx = -1) {
   S.editIdx = idx;
   const emp = idx >= 0 ? S.employees[idx] : null;
   document.getElementById('empModalTitle').textContent = emp ? 'Modifier ' + emp.name : 'Nouvel employé';
-  document.getElementById('empNameInput').value = emp ? emp.name : '';
-  S.editColor  = emp ? emp.color : '#1a6b2a';
-  S.editHasPin = emp && !!emp.pin;
-  S.modalPin      = '';
-  S.modalPinKeep  = emp && !!emp.pin; // conserver l'ancien PIN si on ne saisit rien
-  renderModalPinBoxes();
-  // Afficher "●●●●" si un PIN existe déjà
-  // Plus de champ input — le badge indique l'état du PIN
-  // Afficher un badge "PIN actif" si un PIN est déjà défini
-  const pinRow = document.getElementById('pinActiveBadgeWrap');
-  let badge = pinRow.querySelector('.pin-active-badge');
-  if (emp && emp.pin) {
-    if (!badge) {
-      badge = document.createElement('div');
-      badge.className = 'pin-active-badge';
-      badge.style.cssText = 'font-size:12px;font-weight:700;color:#15803d;background:#dcfce7;padding:6px 12px;border-radius:10px;margin-bottom:8px;display:inline-flex;align-items:center;gap:6px';
-      badge.textContent = '🔒 PIN actif';
-      pinRow.appendChild(badge);
-    }
-  } else if (badge) { badge.remove(); }
+  document.getElementById('empNameInput').value  = emp ? emp.name : '';
+  S.editColor = emp ? emp.color : '#1a6b2a';
   renderColorGrid();
   document.getElementById('empModal').classList.add('open');
-  setTimeout(() => { const sh = document.querySelector('#empModal .modal-sheet'); if(sh) sh.scrollTop = 0; }, 50);
 }
 
 function closeEmpModal(e) {
@@ -1233,20 +788,9 @@ async function saveEmp() {
   const name = document.getElementById('empNameInput').value.trim();
   if (!name) { showToast('Veuillez saisir un nom'); return; }
 
-  let pinHash = '';
-  if (S.modalPin.length === 4) {
-    pinHash = simpleHash(S.modalPin);
-  } else if (S.modalPin.length > 0) {
-    showToast('Le PIN doit être 4 chiffres'); return;
-  } else if (S.modalPinKeep && S.editIdx >= 0 && S.employees[S.editIdx]?.pin) {
-    pinHash = S.employees[S.editIdx].pin; // conserver l'ancien PIN
-  }
-  // Si S.modalPin vide et S.modalPinKeep=false → supprimer le PIN
   const updated = [...S.employees];
-  const empObj = { name, color: S.editColor };
-  if (pinHash) empObj.pin = pinHash;
-  if (S.editIdx >= 0) updated[S.editIdx] = empObj;
-  else updated.push(empObj);
+  if (S.editIdx >= 0) updated[S.editIdx] = { name, color: S.editColor };
+  else updated.push({ name, color: S.editColor });
 
   await pushEmployees(updated);
   document.getElementById('empModal').classList.remove('open');
@@ -1254,373 +798,23 @@ async function saveEmp() {
 
 async function deleteEmp(idx) {
   const emp = S.employees[idx];
-  if (!confirm('Supprimer ' + m.label + ' ? Ce mois disparaitra de la navigation. Les donnees Sheets ne sont pas touchees.')) return;
-  const updated = ALL_MONTHS.filter((_, i) => i !== idx);
-  if (!updated.length) { showToast('Au moins 1 mois doit rester'); return; }
-  await pushAllMonths(updated);
+  if (!confirm('Supprimer ' + emp.name + ' ?\n\nCet employé n\'apparaîtra plus dans l\'application.')) return;
+  if (S.employees.length <= 1) { showToast('Au moins 1 employé doit rester'); return; }
+  const updated = S.employees.filter((_, i) => i !== idx);
+  await pushEmployees(updated);
 }
 
-function openAddMonthModal() {
-  // Pré-remplir avec le mois suivant le dernier de la liste
-  const last = ALL_MONTHS[ALL_MONTHS.length - 1];
-  if (last) {
-    const [y, m] = last.key.split('-').map(Number);
-    const next = new Date(y, m, 1); // mois suivant
-    document.getElementById('addYearSelect').value  = next.getFullYear();
-    document.getElementById('addMonthSelect').value = String(next.getMonth() + 1).padStart(2, '0');
-  }
-  document.getElementById('addMonthTab').value = '';
-  updateMonthPreview();
-  document.getElementById('addMonthModal').classList.add('open');
-}
-
-function closeAddMonthModal(e) {
-  if (!e || e.target === document.getElementById('addMonthModal'))
-    document.getElementById('addMonthModal').classList.remove('open');
-}
-
-function updateMonthPreview() {
-  const m    = document.getElementById('addMonthSelect').value;
-  const y    = document.getElementById('addYearSelect').value;
-  const tab  = document.getElementById('addMonthTab').value.trim().toUpperCase();
-  const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin',
-                  'Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  const label = MONTHS[parseInt(m) - 1] + ' ' + y;
-  // Suggérer automatiquement le nom de l'onglet si vide
-  if (!document.getElementById('addMonthTab').value.trim()) {
-    const shortMonth = ['JAN','FEV','MARS','AVR','MAI','JUIN',
-                        'JUILLET','AOUT','SEP','OCT','NOV','DEC'];
-    const suggested = shortMonth[parseInt(m) - 1] + ' ' + String(y).slice(2);
-    document.getElementById('addMonthTab').placeholder = suggested;
-  }
-  const key = y + '-' + m;
-  document.getElementById('tabPreview').textContent =
-    'Clé : ' + key + ' · Label : ' + label + (tab ? ' · Onglet : ' + tab : '');
-}
-
-async function confirmAddMonth() {
-  const m     = document.getElementById('addMonthSelect').value;
-  const y     = document.getElementById('addYearSelect').value;
-  const tab   = document.getElementById('addMonthTab').value.trim().toUpperCase();
-  const key   = y + '-' + m;
-  const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin',
-                  'Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  const label = MONTHS[parseInt(m) - 1] + ' ' + y;
-
-  if (!tab) { showToast("Saisissez le nom exact de l'onglet Sheets"); return; }
-  if (ALL_MONTHS.find(mo => mo.key === key)) {
-    showToast('Ce mois est déjà dans la liste'); return;
-  }
-
-  const updated = [...ALL_MONTHS, { key, tab, label }];
-  // Trier par clé chronologique
-  updated.sort((a, b) => a.key.localeCompare(b.key));
-  await pushAllMonths(updated);
-  document.getElementById('addMonthModal').classList.remove('open');
-}
-
-async function pushAllMonths(list) {
+async function pushEmployees(list) {
   try {
-    const url  = API + '?action=setAllMonths&admin=' + enc(ADMIN_NAME) + '&months=' + enc(JSON.stringify(list));
+    const url  = API + '?action=setEmployees&admin=' + enc(ADMIN_NAME) + '&employees=' + enc(JSON.stringify(list));
     const data = await fetchJSON(url);
     if (data.error) throw new Error(data.error);
-    ALL_MONTHS = data.allMonths;
-    lsSet('gv_all_months', ALL_MONTHS);
-    // Nettoyer les mois visibles qui n'existent plus
-    const validKeys = ALL_MONTHS.map(m => m.key);
-    S.visibleMonths = S.visibleMonths.filter(k => validKeys.includes(k));
-    if (!S.visibleMonths.length) S.visibleMonths = validKeys;
-    lsSet('gv_months', S.visibleMonths);
-    clampDate('my'); clampDate('team');
-    renderNav('my'); renderNav('team');
-    renderAdmin(); // Rafraîchir la page admin
-    showToast('✅ Mois mis à jour');
+    S.employees = data.employees; lsSet('gv_emp_list', S.employees);
+    S.teamCache = {};
+    buildLoginList();
+    renderAdmin();
+    showToast('✅ Équipe mise à jour');
   } catch (err) { showToast('❌ ' + err.message); }
-}
-
-// ═══════════════════════════════════════════════
-// HISTORIQUE
-// ═══════════════════════════════════════════════
-function openMyHist() { if (S.emp) openHist(S.emp.name); }
-
-function openHistIdx(i) { if (S.employees[i]) openHist(S.employees[i].name); }
-
-async function openHist(empName) {
-  document.getElementById('histEmpName').textContent = empName;
-  document.getElementById('histScroll').innerHTML =
-    '<div class="center-state"><div class="spinner"></div></div>';
-  document.getElementById('histOverlay').classList.add('open');
-  document.getElementById('histOverlay').dataset.emp = empName;
-
-  try {
-    const data = await fetchJSON(API + '?action=getHistory&employee=' + enc(empName));
-    renderHist(data.history || []);
-  } catch (err) {
-    document.getElementById('histScroll').innerHTML =
-      '<div class="hist-empty">Erreur de chargement</div>';
-  }
-}
-
-function renderHist(history) {
-  if (!history.length) {
-    document.getElementById('histScroll').innerHTML =
-      '<div class="hist-empty">Aucun changement enregistré</div>';
-    return;
-  }
-
-  document.getElementById('histScroll').innerHTML = history.map(entry => {
-    const d  = new Date(entry.timestamp);
-    const dt = d.toLocaleDateString('fr-FR') + ' à ' +
-               d.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
-    const rows = (entry.changes || []).map(c => `
-      <div class="hist-change-row">
-        <span class="hist-day">${c.label}</span>
-        <span class="hist-from">${c.old}</span>
-        <span class="hist-arr">→</span>
-        <span class="hist-to">${c['new']}</span>
-      </div>`).join('');
-    return `<div class="hist-entry">
-      <div class="hist-entry-date">🕐 ${dt}</div>
-      ${rows}
-    </div>`;
-  }).join('');
-}
-
-async function doClearHistory() {
-  const empName = document.getElementById('histOverlay').dataset.emp;
-  if (!empName) return;
-  if (!confirm('Effacer l\u0027historique de ' + empName + ' ?')) return;
-  try {
-    await fetchJSON(API + '?action=clearHistory&employee=' + enc(empName));
-    renderHist([]);
-    showToast('Historique effacé ✓');
-  } catch (err) { showToast('❌ ' + err.message); }
-}
-
-function closeHist(e) {
-  if (!e || e.target === document.getElementById('histOverlay'))
-    document.getElementById('histOverlay').classList.remove('open');
-}
-
-// ═══════════════════════════════════════════════
-// ONESIGNAL
-// ═══════════════════════════════════════════════
-function initOneSignal(employeeName) {
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    try {
-      await OneSignal.init({
-        appId:                     '100b315e-6d8b-4ffa-a011-2192d3d6e102',
-        serviceWorkerPath:         'OneSignalSDKWorker.js',
-        serviceWorkerParam:        { scope: '/' },
-        notifyButton:              { enable: false },
-        allowLocalhostAsSecureOrigin: true,
-      });
-      // Demander la permission et taguer l'employé
-      await OneSignal.Notifications.requestPermission();
-      await OneSignal.User.addTag('employee', employeeName);
-      Logger.log && Logger.log('[OneSignal] Taggé: ' + employeeName);
-    } catch (err) {
-      console.warn('[OneSignal] Init error:', err);
-    }
-  });
-}
-
-// ── Afficher les changements ──
-async function fetchAndShowChanges() {
-  if (!S.emp) return;
-  try {
-    const data = await fetchJSON(API + '?action=getChanges&employee=' + enc(S.emp.name));
-    if (data.changes && data.changes.length > 0) {
-      showChangesCard(data.changes, data.timestamp);
-    }
-  } catch (_) {}
-}
-
-function showChangesCard(changes, ts) {
-  const d  = ts ? new Date(ts) : null;
-  const dt = d ? d.toLocaleDateString('fr-FR') + ' à ' + d.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '';
-  document.getElementById('changesDate').textContent = dt ? 'Modifié le ' + dt : '';
-  document.getElementById('changesList').innerHTML = changes.map(c => `
-    <div class="change-row">
-      <span class="change-date">${c.label}</span>
-      <div class="change-vals">
-        <span class="change-old">${c.old}</span>
-        <span class="change-arrow">→</span>
-        <span class="change-new">${c['new']}</span>
-      </div>
-    </div>`).join('');
-  document.getElementById('changesOverlay').classList.add('open');
-}
-
-function dismissChanges() {
-  document.getElementById('changesOverlay').classList.remove('open');
-  if (S.emp) {
-    fetchJSON(API + '?action=clearChanges&employee=' + enc(S.emp.name)).catch(() => {});
-  }
-}
-
-function closeChanges(e) {
-  if (!e || e.target === document.getElementById('changesOverlay')) {
-    document.getElementById('changesOverlay').classList.remove('open');
-    // Effacer les changements sur le serveur pour ne plus les revoir
-    if (S.emp) {
-      fetchJSON(API + '?action=clearChanges&employee=' + enc(S.emp.name))
-        .catch(() => {}); // Silencieux si erreur réseau
-    }
-  }
-}
-
-// ═══════════════════════════════════════════════
-// PIN
-// ═══════════════════════════════════════════════
-function showPinScreen(emp) {
-  const av = document.getElementById('pinAvatar');
-  av.textContent = ini(emp.name);
-  av.style.background = emp.color;
-  document.getElementById('pinEmpName').textContent = emp.name;
-  S.pinBuffer = '';
-  updatePinDots(false);
-  showScreen('pinScreen');
-  document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('error'));
-}
-
-function pinKey(digit) {
-  if (S.pinBuffer.length >= 4) return;
-  S.pinBuffer += digit;
-  updatePinDots(false);
-  if (S.pinBuffer.length === 4) {
-    setTimeout(() => checkPin(), 100);
-  }
-}
-
-function pinDel() {
-  S.pinBuffer = S.pinBuffer.slice(0, -1);
-  updatePinDots(false);
-}
-
-function pinBack() {
-  S.pendingEmp = null; S.pinBuffer = '';
-  showScreen('loginScreen');
-}
-
-function updatePinDots(error) {
-  for (let i = 0; i < 4; i++) {
-    const d = document.getElementById('pd' + i);
-    d.classList.toggle('filled', i < S.pinBuffer.length);
-    d.classList.toggle('error', error);
-  }
-}
-
-function checkPin() {
-  const emp = S.pendingEmp;
-  if (!emp) return;
-  // Hash simple (XOR + base36) — suffisant pour un usage interne
-  const inputHash = simpleHash(S.pinBuffer);
-  if (inputHash === emp.pin) {
-    S.pendingEmp = null; S.pinBuffer = '';
-    S.pinVerified = true;      // FLAG : PIN vérifié, ne pas redemander
-    loginAs(emp, false);
-  } else {
-    updatePinDots(true);
-    navigator.vibrate?.(200);
-    setTimeout(() => { S.pinBuffer = ''; updatePinDots(false); }, 800);
-  }
-}
-
-// Hash simple — pas cryptographique mais suffisant pour un PIN d'usage interne
-function simpleHash(pin) {
-  let h = 5381;
-  for (let i = 0; i < pin.length; i++) h = ((h << 5) + h) + pin.charCodeAt(i);
-  return (h >>> 0).toString(36);
-}
-
-// ── PIN modal : 4 cases sans champ input ──
-function modalPinKey(digit) {
-  if (S.modalPin.length >= 4) return;
-  S.modalPin += digit;
-  renderModalPinBoxes();
-}
-function modalPinDel() {
-  S.modalPin = S.modalPin.slice(0, -1);
-  renderModalPinBoxes();
-}
-function modalPinClear() {
-  S.modalPin = '';
-  S.modalPinKeep = false;
-  renderModalPinBoxes();
-  const wrap = document.getElementById('pinActiveBadgeWrap');
-  if (wrap) wrap.innerHTML = '';
-}
-function renderModalPinBoxes() {
-  for (let i = 0; i < 4; i++) {
-    const box = document.getElementById('mpb' + i);
-    if (!box) continue;
-    box.classList.remove('active','has-val');
-    if (i < S.modalPin.length) box.classList.add('has-val');
-    else if (i === S.modalPin.length) box.classList.add('active');
-  }
-}
-
-// ═══════════════════════════════════════════════
-// DRAG & DROP ORDRE EMPLOYÉS
-// ═══════════════════════════════════════════════
-let _dragIdx = -1;
-
-function initDragDrop() {
-  const list = document.getElementById('adminEmpList');
-  list.querySelectorAll('.emp-item').forEach((item, i) => {
-    const handle = item.querySelector('.drag-handle');
-    // Touch
-    handle.addEventListener('touchstart', e => {
-      _dragIdx = i;
-      item.classList.add('dragging');
-      e.preventDefault();
-    }, { passive: false });
-
-    handle.addEventListener('touchmove', e => {
-      if (_dragIdx < 0) return;
-      e.preventDefault();
-      const touch = e.touches[0];
-      const target = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.emp-item');
-      list.querySelectorAll('.emp-item').forEach(el => el.classList.remove('drag-over'));
-      if (target && target !== item) target.classList.add('drag-over');
-    }, { passive: false });
-
-    handle.addEventListener('touchend', e => {
-      if (_dragIdx < 0) return;
-      item.classList.remove('dragging');
-      const target = document.querySelector('.emp-item.drag-over');
-      if (target) {
-        target.classList.remove('drag-over');
-        const targetIdx = parseInt(target.dataset.idx);
-        if (targetIdx !== _dragIdx) reorderEmp(_dragIdx, targetIdx);
-      }
-      _dragIdx = -1;
-    });
-
-    // Mouse (desktop)
-    handle.addEventListener('dragstart', e => { _dragIdx = i; item.classList.add('dragging'); });
-    item.addEventListener('dragover',  e => { e.preventDefault(); item.classList.add('drag-over'); });
-    item.addEventListener('dragleave', ()  => item.classList.remove('drag-over'));
-    item.addEventListener('drop',      ()  => {
-      item.classList.remove('drag-over');
-      if (_dragIdx !== i) reorderEmp(_dragIdx, i);
-    });
-    item.addEventListener('dragend',   ()  => { item.classList.remove('dragging'); _dragIdx = -1; });
-    item.draggable = true;
-    item.dataset.idx = i;
-  });
-}
-
-function reorderEmp(fromIdx, toIdx) {
-  const updated = [...S.employees];
-  const [moved] = updated.splice(fromIdx, 1);
-  updated.splice(toIdx, 0, moved);
-  S.employees = updated;
-  renderAdmin();
-  // Sauvegarder automatiquement
-  pushEmployees(S.employees);
 }
 
 // ═══════════════════════════════════════════════
@@ -1693,7 +887,7 @@ function doInstall() {
 function dismissInstall() { localStorage.setItem('gv_nodl','1'); document.getElementById('installBar').classList.remove('visible'); }
 function registerSW() {
   if (!('serviceWorker' in navigator)) return;
-  const sw=`const C='gv-v5';self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{if(e.request.url.includes('script.google.com')){e.respondWith(fetch(e.request));return;}e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});`;
+  const sw=`const C='gv-v4';self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{if(e.request.url.includes('script.google.com')){e.respondWith(fetch(e.request));return;}e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});`;
   navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
 }
 
@@ -1712,21 +906,10 @@ function mkLbl(mk){ const M=['jan.','fév.','mars','avr.','mai','juin','juil.','
 function pad(n)   { return String(n).padStart(2,'0'); }
 function ini(n)   { return n.split(' ').map(p=>p[0]||'').join('').substring(0,2).toUpperCase(); }
 function enc(s)   { return encodeURIComponent(s); }
+let _tt=null;
 function showToast(msg) {
-  const el = document.getElementById('toast');
-  // Retirer la classe pour relancer l'animation si déjà visible
-  el.classList.remove('show');
-  el.textContent = msg;
-  // Forcer le reflow pour que l'animation reparte de zéro
-  void el.offsetWidth;
-  el.classList.add('show');
-  // Retirer la classe après la fin de l'animation (3s total)
-  el.addEventListener('animationend', function handler(e) {
-    if (e.animationName === 'toastOut') {
-      el.classList.remove('show');
-      el.removeEventListener('animationend', handler);
-    }
-  });
+  const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show');
+  if(_tt) clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),3200);
 }
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(_){}}
 function lsGet(k){try{return JSON.parse(localStorage.getItem(k));}catch(_){return null;}}
