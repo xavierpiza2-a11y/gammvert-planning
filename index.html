@@ -708,7 +708,7 @@ input{font-family:inherit}
       <div class="center-state"><div class="spinner"></div></div>
     </div>
     <div class="hist-footer">
-      <button class="hist-clear-btn" onclick="doClearHistory()">🗑 Effacer</button>
+      <button class="hist-clear-btn" id="histClearBtn" onclick="doClearHistory()">🗑 Effacer</button>
       <button class="hist-close-btn" onclick="closeHist()">Fermer</button>
     </div>
   </div>
@@ -1380,6 +1380,9 @@ async function openHist(empName) {
     '<div class="center-state"><div class="spinner"></div></div>';
   document.getElementById('histOverlay').classList.add('open');
   document.getElementById('histOverlay').dataset.emp = empName;
+  // Afficher le bouton "Effacer" uniquement pour Xavier
+  const clearBtn = document.getElementById('histClearBtn');
+  if (clearBtn) clearBtn.style.display = S.isAdmin ? 'block' : 'none';
 
   try {
     const data = await fetchJSON(API + '?action=getHistory&employee=' + enc(empName));
