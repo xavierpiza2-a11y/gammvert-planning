@@ -191,6 +191,79 @@ input{font-family:inherit}
 
 
 
+
+/* ══════════════════════════════════════
+   STYLES D'IMPRESSION / PDF
+══════════════════════════════════════ */
+@media print {
+  /* Masquer tout sauf le contenu de planning */
+  .app-header, .update-banner, .tab-bar, .bottom-nav,
+  .month-nav, .stats-strip, .install-bar, .app-footer,
+  .changes-overlay, .hist-overlay, .modal-overlay,
+  .print-btn, #addMonthModal, #empModal, #monthModal,
+  .toast, #panelTeam, #panelAdmin { display: none !important; }
+
+  /* Afficher uniquement le panel Mon planning */
+  #appScreen { padding: 0; }
+  #panelMy   { display: block !important; }
+  .planning-scroll {
+    overflow: visible !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+
+  /* En-tête d'impression */
+  .print-header { display: block !important; }
+
+  /* Styles des lignes */
+  .day-row {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0;
+    border-radius: 0 !important;
+    margin-bottom: 1px;
+  }
+  .day-row.is-past { opacity: 1 !important; }
+  .day-side { background: #f8fafc !important; }
+  .day-row.is-today .day-side { background: #1a6b2a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .shift-pill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .info-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* Page */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm;
+  }
+  body { font-size: 11px; }
+}
+
+/* En-tête visible uniquement à l'impression */
+.print-header {
+  display: none;
+  padding: 0 0 12px;
+  border-bottom: 2px solid #1a6b2a;
+  margin-bottom: 10px;
+}
+.print-header-title {
+  font-size: 18px; font-weight: 700; color: #1a6b2a;
+}
+.print-header-sub {
+  font-size: 12px; color: #64748b; margin-top: 2px;
+}
+.print-header-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+
+/* Bouton PDF dans la nav */
+.print-btn {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--s100); color: var(--s700);
+  font-size: 16px; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
+  transition: background .15s;
+}
+.print-btn:active { background: var(--s200); }
+
 /* ══ GESTION MOIS ADMIN ══ */
 .month-item-admin{display:flex;align-items:center;gap:10px;padding:11px 16px;
   border-bottom:1px solid var(--s100)}
@@ -501,8 +574,20 @@ input{font-family:inherit}
         <div class="month-year" id="monthYearMy"></div>
       </div>
       <button class="nav-btn" id="nextBtnMy" onclick="changeMonthPanel('my',1)">›</button>
+      <button class="print-btn" onclick="printPlanning()" title="Télécharger / Imprimer">📄</button>
     </div>
     <div class="stats-strip" id="statsMy"></div>
+    <!-- En-tête visible uniquement à l'impression -->
+    <div class="print-header" id="printHeader">
+      <div class="print-header-logo">
+        <span style="font-size:28px">🌿</span>
+        <div>
+          <div class="print-header-title">GammVert Cazères</div>
+          <div class="print-header-sub" id="printHeaderSub">Planning</div>
+        </div>
+      </div>
+    </div>
+
     <div class="install-bar" id="installBar">
       <div class="ib-top">
         <div class="ib-icon">📲</div>
@@ -1432,6 +1517,23 @@ async function doClearHistory() {
 function closeHist(e) {
   if (!e || e.target === document.getElementById('histOverlay'))
     document.getElementById('histOverlay').classList.remove('open');
+}
+
+
+// ═══════════════════════════════════════════════
+// PDF / IMPRESSION
+// ═══════════════════════════════════════════════
+function printPlanning() {
+  // Mettre à jour l'en-tête avec le nom et le mois
+  const d = S.dateMy;
+  const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin',
+                  'Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+  const monthLabel = MONTHS[d.getMonth()] + ' ' + d.getFullYear();
+  document.getElementById('printHeaderSub').textContent =
+    S.emp.name + ' · ' + monthLabel;
+
+  // Lancer l'impression (sur Android = Enregistrer en PDF)
+  setTimeout(() => window.print(), 100);
 }
 
 // ═══════════════════════════════════════════════
