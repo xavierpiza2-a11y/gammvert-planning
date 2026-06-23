@@ -1338,6 +1338,25 @@ async function saveEmp() {
   document.getElementById('empModal').classList.remove('open');
 }
 
+async function pushEmployees(list) {
+  try {
+    const url  = API + '?action=setEmployees&admin=' + enc(ADMIN_NAME) + '&employees=' + enc(JSON.stringify(list));
+    const data = await fetchJSON(url);
+    if (data.error) throw new Error(data.error);
+    // Fusionner : conserver les pins de la liste envoyée
+    const returned = data.employees || [];
+    S.employees = returned.map(se => {
+      const sent = list.find(e => e.name === se.name);
+      return { ...se, pin: sent?.pin || se.pin || '' };
+    });
+    lsSet('gv_emp_list', S.employees);
+    S.teamCache = {};
+    buildLoginList();
+    renderAdmin();
+    showToast('✅ Équipe mise à jour');
+  } catch (err) { showToast('❌ ' + err.message); }
+}
+
 async function deleteEmp(idx) {
   const emp = S.employees[idx];
   if (!emp) return;
