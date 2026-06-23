@@ -1846,7 +1846,7 @@ function doInstall() {
 function dismissInstall() { localStorage.setItem('gv_nodl','1'); document.getElementById('installBar').classList.remove('visible'); }
 function registerSW() {
   if (!('serviceWorker' in navigator)) return;
-  const sw=`const C='gv-v5';self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{if(e.request.url.includes('script.google.com')){e.respondWith(fetch(e.request));return;}e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});`;
+  const sw=`const C='gv-v6';self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{if(e.request.url.includes('script.google.com')){e.respondWith(fetch(e.request));return;}e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});`;
   navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
 }
 
